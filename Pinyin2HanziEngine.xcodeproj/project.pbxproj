@@ -9,21 +9,29 @@
 /* Begin PBXBuildFile section */
 		54B5AD9D23EF5FA700E45988 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54B5AD9C23EF5FA700E45988 /* AppDelegate.swift */; };
 		54B5AD9F23EF5FA700E45988 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54B5AD9E23EF5FA700E45988 /* SceneDelegate.swift */; };
-		54B5ADA123EF5FA700E45988 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54B5ADA023EF5FA700E45988 /* ViewController.swift */; };
 		54B5ADA423EF5FA700E45988 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 54B5ADA223EF5FA700E45988 /* Main.storyboard */; };
 		54B5ADA623EF5FAB00E45988 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 54B5ADA523EF5FAB00E45988 /* Assets.xcassets */; };
 		54B5ADA923EF5FAB00E45988 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 54B5ADA723EF5FAB00E45988 /* LaunchScreen.storyboard */; };
+		54B5ADB623EF606300E45988 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54B5ADB523EF606300E45988 /* ViewController.swift */; };
+		54B5ADBA23EF609600E45988 /* syllable.txt in Resources */ = {isa = PBXBuildFile; fileRef = 54B5ADB823EF607F00E45988 /* syllable.txt */; };
+		54B5ADBF23EF611A00E45988 /* SyllableGraph.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54B5ADBB23EF611A00E45988 /* SyllableGraph.swift */; };
+		54B5ADC123EF611A00E45988 /* Graph.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54B5ADBD23EF611A00E45988 /* Graph.swift */; };
+		54B5ADC223EF611A00E45988 /* PinyinSequence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54B5ADBE23EF611A00E45988 /* PinyinSequence.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		54B5AD9923EF5FA700E45988 /* Pinyin2HanziEngine.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Pinyin2HanziEngine.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		54B5AD9C23EF5FA700E45988 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		54B5AD9E23EF5FA700E45988 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		54B5ADA023EF5FA700E45988 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		54B5ADA323EF5FA700E45988 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		54B5ADA523EF5FAB00E45988 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		54B5ADA823EF5FAB00E45988 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		54B5ADAA23EF5FAB00E45988 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		54B5ADB523EF606300E45988 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		54B5ADB823EF607F00E45988 /* syllable.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = syllable.txt; sourceTree = "<group>"; };
+		54B5ADBB23EF611A00E45988 /* SyllableGraph.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SyllableGraph.swift; sourceTree = "<group>"; };
+		54B5ADBD23EF611A00E45988 /* Graph.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Graph.swift; sourceTree = "<group>"; };
+		54B5ADBE23EF611A00E45988 /* PinyinSequence.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PinyinSequence.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,15 +64,36 @@
 		54B5AD9B23EF5FA700E45988 /* Pinyin2HanziEngine */ = {
 			isa = PBXGroup;
 			children = (
-				54B5AD9C23EF5FA700E45988 /* AppDelegate.swift */,
-				54B5AD9E23EF5FA700E45988 /* SceneDelegate.swift */,
-				54B5ADA023EF5FA700E45988 /* ViewController.swift */,
-				54B5ADA223EF5FA700E45988 /* Main.storyboard */,
-				54B5ADA523EF5FAB00E45988 /* Assets.xcassets */,
-				54B5ADA723EF5FAB00E45988 /* LaunchScreen.storyboard */,
+				54B5ADB023EF5FBC00E45988 /* Supporting files */,
+				54B5ADB723EF607F00E45988 /* Resources */,
+				54B5ADBD23EF611A00E45988 /* Graph.swift */,
+				54B5ADBE23EF611A00E45988 /* PinyinSequence.swift */,
+				54B5ADBB23EF611A00E45988 /* SyllableGraph.swift */,
+				54B5ADB523EF606300E45988 /* ViewController.swift */,
 				54B5ADAA23EF5FAB00E45988 /* Info.plist */,
 			);
 			path = Pinyin2HanziEngine;
+			sourceTree = "<group>";
+		};
+		54B5ADB023EF5FBC00E45988 /* Supporting files */ = {
+			isa = PBXGroup;
+			children = (
+				54B5AD9C23EF5FA700E45988 /* AppDelegate.swift */,
+				54B5AD9E23EF5FA700E45988 /* SceneDelegate.swift */,
+				54B5ADA223EF5FA700E45988 /* Main.storyboard */,
+				54B5ADA523EF5FAB00E45988 /* Assets.xcassets */,
+				54B5ADA723EF5FAB00E45988 /* LaunchScreen.storyboard */,
+			);
+			path = "Supporting files";
+			sourceTree = "<group>";
+		};
+		54B5ADB723EF607F00E45988 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				54B5ADB823EF607F00E45988 /* syllable.txt */,
+			);
+			name = Resources;
+			path = ../../Pinyin2HanziEngine.bak/Resources;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -125,6 +154,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				54B5ADBA23EF609600E45988 /* syllable.txt in Resources */,
 				54B5ADA923EF5FAB00E45988 /* LaunchScreen.storyboard in Resources */,
 				54B5ADA623EF5FAB00E45988 /* Assets.xcassets in Resources */,
 				54B5ADA423EF5FA700E45988 /* Main.storyboard in Resources */,
@@ -138,8 +168,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				54B5ADA123EF5FA700E45988 /* ViewController.swift in Sources */,
+				54B5ADC123EF611A00E45988 /* Graph.swift in Sources */,
+				54B5ADBF23EF611A00E45988 /* SyllableGraph.swift in Sources */,
+				54B5ADB623EF606300E45988 /* ViewController.swift in Sources */,
 				54B5AD9D23EF5FA700E45988 /* AppDelegate.swift in Sources */,
+				54B5ADC223EF611A00E45988 /* PinyinSequence.swift in Sources */,
 				54B5AD9F23EF5FA700E45988 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
