@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		54B045BC23F8E982003EB423 /* LexiconTree.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54B045BB23F8E982003EB423 /* LexiconTree.swift */; };
+		54B045BE23F8FA26003EB423 /* LexiconGraph.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54B045BD23F8FA26003EB423 /* LexiconGraph.swift */; };
 		54B5AD9D23EF5FA700E45988 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54B5AD9C23EF5FA700E45988 /* AppDelegate.swift */; };
 		54B5AD9F23EF5FA700E45988 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54B5AD9E23EF5FA700E45988 /* SceneDelegate.swift */; };
 		54B5ADA423EF5FA700E45988 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 54B5ADA223EF5FA700E45988 /* Main.storyboard */; };
@@ -20,6 +22,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		54B045BB23F8E982003EB423 /* LexiconTree.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LexiconTree.swift; sourceTree = "<group>"; };
+		54B045BD23F8FA26003EB423 /* LexiconGraph.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LexiconGraph.swift; sourceTree = "<group>"; };
 		54B5AD9923EF5FA700E45988 /* Pinyin2HanziEngine.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Pinyin2HanziEngine.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		54B5AD9C23EF5FA700E45988 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		54B5AD9E23EF5FA700E45988 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -67,6 +71,8 @@
 				54B5ADB023EF5FBC00E45988 /* Supporting files */,
 				54B5ADB723EF607F00E45988 /* Resources */,
 				54B5ADBD23EF611A00E45988 /* Graph.swift */,
+				54B045BB23F8E982003EB423 /* LexiconTree.swift */,
+				54B045BD23F8FA26003EB423 /* LexiconGraph.swift */,
 				54B5ADBE23EF611A00E45988 /* PinyinSequence.swift */,
 				54B5ADBB23EF611A00E45988 /* SyllableGraph.swift */,
 				54B5ADB523EF606300E45988 /* ViewController.swift */,
@@ -169,7 +175,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				54B5ADC123EF611A00E45988 /* Graph.swift in Sources */,
+				54B045BE23F8FA26003EB423 /* LexiconGraph.swift in Sources */,
 				54B5ADBF23EF611A00E45988 /* SyllableGraph.swift in Sources */,
+				54B045BC23F8E982003EB423 /* LexiconTree.swift in Sources */,
 				54B5ADB623EF606300E45988 /* ViewController.swift in Sources */,
 				54B5AD9D23EF5FA700E45988 /* AppDelegate.swift in Sources */,
 				54B5ADC223EF611A00E45988 /* PinyinSequence.swift in Sources */,

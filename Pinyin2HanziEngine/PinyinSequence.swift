@@ -8,6 +8,9 @@
 
 import Foundation
 
+/*
+ store the valid pinyin sequences from vertex i to vertex j in syllable graph
+ */
 class PinyinSequence {
     var pinyinSequence: [String]
     var from: Int
