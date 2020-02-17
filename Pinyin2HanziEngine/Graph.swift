@@ -33,6 +33,7 @@ class Graph<V, E> {
     
     /// property of the graph
     var vertices: [Vertex] = []
+    var edges: [Edge] = []
     var edgeCount: Int = 0
     var vertexCount: Int {
         return vertices.count
@@ -52,6 +53,7 @@ class Graph<V, E> {
         let edge = Edge(from: from, to: to)
         from.to.append(edge)
         to.from.append(edge)
+        self.edges.append(edge)
         edgeCount += 1
         
         return edge
