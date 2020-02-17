@@ -7,13 +7,15 @@
 
 import Foundation
 
-class VertexData {
-    var isForwardAccess: Bool = false
-    var isBackwardAccess: Bool = false
-    var shrinkID: Int = -1
-}
 
-class SyllableGraph: Graph<VertexData, String> {
+class SyllableGraph: Graph<SyllableGraph.VertexData, String> {
+    
+    class VertexData {
+        var isForwardAccess: Bool = false
+        var isBackwardAccess: Bool = false
+        var shrinkID: Int = -1
+    }
+    
     var pinyinString: String
     var validSyllable: Set<String>
     
