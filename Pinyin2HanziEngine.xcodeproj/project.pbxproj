@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		5418950E23FA3450008A3B47 /* LanguageModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5418950D23FA3450008A3B47 /* LanguageModel.swift */; };
 		5418951023FA3BB6008A3B47 /* SLMGraph.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5418950F23FA3BB6008A3B47 /* SLMGraph.swift */; };
+		5418951223FAF77C008A3B47 /* Solution.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5418951123FAF77C008A3B47 /* Solution.swift */; };
 		54B045BC23F8E982003EB423 /* LexiconTree.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54B045BB23F8E982003EB423 /* LexiconTree.swift */; };
 		54B045BE23F8FA26003EB423 /* LexiconGraph.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54B045BD23F8FA26003EB423 /* LexiconGraph.swift */; };
 		54B5AD9D23EF5FA700E45988 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54B5AD9C23EF5FA700E45988 /* AppDelegate.swift */; };
@@ -26,6 +27,7 @@
 /* Begin PBXFileReference section */
 		5418950D23FA3450008A3B47 /* LanguageModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LanguageModel.swift; sourceTree = "<group>"; };
 		5418950F23FA3BB6008A3B47 /* SLMGraph.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SLMGraph.swift; sourceTree = "<group>"; };
+		5418951123FAF77C008A3B47 /* Solution.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Solution.swift; sourceTree = "<group>"; };
 		54B045BB23F8E982003EB423 /* LexiconTree.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LexiconTree.swift; sourceTree = "<group>"; };
 		54B045BD23F8FA26003EB423 /* LexiconGraph.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LexiconGraph.swift; sourceTree = "<group>"; };
 		54B5AD9923EF5FA700E45988 /* Pinyin2HanziEngine.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Pinyin2HanziEngine.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -75,6 +77,7 @@
 				54B5ADB023EF5FBC00E45988 /* Supporting files */,
 				54B5ADB723EF607F00E45988 /* Resources */,
 				54B5ADBD23EF611A00E45988 /* Graph.swift */,
+				5418951123FAF77C008A3B47 /* Solution.swift */,
 				54B5ADBB23EF611A00E45988 /* SyllableGraph.swift */,
 				54B045BB23F8E982003EB423 /* LexiconTree.swift */,
 				54B045BD23F8FA26003EB423 /* LexiconGraph.swift */,
@@ -184,6 +187,7 @@
 				5418950E23FA3450008A3B47 /* LanguageModel.swift in Sources */,
 				54B045BE23F8FA26003EB423 /* LexiconGraph.swift in Sources */,
 				5418951023FA3BB6008A3B47 /* SLMGraph.swift in Sources */,
+				5418951223FAF77C008A3B47 /* Solution.swift in Sources */,
 				54B5ADBF23EF611A00E45988 /* SyllableGraph.swift in Sources */,
 				54B045BC23F8E982003EB423 /* LexiconTree.swift in Sources */,
 				54B5ADB623EF606300E45988 /* ViewController.swift in Sources */,

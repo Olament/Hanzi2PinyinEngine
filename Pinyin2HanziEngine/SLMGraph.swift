@@ -23,11 +23,15 @@ class SLMGraph: Graph<SLMGraph.VertexData, Double> {
 
     class Distance {
         var distance = -Double.infinity
-        var edge: Graph<VertexData, Double>.Edge
+        var edge: Graph<VertexData, Double>.Edge?
         
         init(distance: Double, edge: Graph<VertexData, Double>.Edge) {
             self.distance = distance
             self.edge = edge
+        }
+        
+        init(distance: Double) {
+            self.distance = distance
         }
     }
 
@@ -110,5 +114,92 @@ class SLMGraph: Graph<SLMGraph.VertexData, Double> {
         let edge = super.addEdge(from: self.vertices[from], to: self.vertices[to])
         edge.data = log2(weight)
         return edge
+    }
+    
+    func calculatedPath(vertex current: SLMGraph.Vertex) {
+        current.data!.isCalculated = true // mark itself as visited
+        
+        for edge in current.from {
+            let prev = edge.from
+            if !prev.data!.isCalculated {
+                calculatedPath(vertex: prev)
+            }
+            
+            for prevDistance in (prev.data?.distanceSet.distanceList)! {
+                if !current.data!.distanceSet.add(newDistance: Distance(distance: prevDistance.distance, edge: edge)) {
+                    break // do not ask me why
+                }
+            }
+        }
+    }
+    
+    private var phraseSequence: [SLMGraph.VertexData]  = []
+    private var sentences: [Solution] = []
+    
+    private func makeSentence(currentVertex: SLMGraph.Vertex, probability: Double) {
+        phraseSequence.insert(currentVertex.data!, at: 0)
+        
+        for distance in currentVertex.data!.distanceSet.distanceList {
+            if let prevEdge = distance.edge {
+                // since we log transform each weight
+                // w1*w2*w3 -> log(w1*w2*w3) = log(w1) + log(w2) + log(w3)
+                makeSentence(currentVertex: prevEdge.from, probability: probability + prevEdge.data!)
+            } else {
+                var sentence: String = ""
+                var pinyins: [String] = []
+                
+                for vertexData in phraseSequence {
+                    if let phrase = vertexData.phrase, let pinyinSequence = vertexData.pinyinSequence {
+                        sentence.append(phrase)
+                        for sequence in pinyinSequence.pinyinSequence {
+                            pinyins.append(sequence)
+                        }
+                    }
+                }
+                
+                let newSolution = Solution() //TODO: rewrite this part
+                newSolution.sentence = sentence
+                newSolution.probability = probability
+                newSolution.pinyin = pinyins
+                
+                sentences.append(newSolution)
+            }
+        }
+        
+        phraseSequence.remove(at: 0)
+    }
+    
+    func makeSentence() -> [Solution] {
+        /* set vertex (S) such that search terminate here */
+        self.vertices[0].data?.isCalculated = true
+        _ = self.vertices[0].data?.distanceSet.add(newDistance: Distance(distance: 0.0))
+        
+        calculatedPath(vertex: self.vertices[self.vertexCount - 1])
+        makeSentence(currentVertex: self.vertices[self.vertexCount - 1], probability: 0.0)
+        
+        sentences.sort()
+        var finalSentences: [Solution] = [] // sentences w/o duplicate
+        
+        /* removing duplicate solution from solution set */
+        for i in 0..<sentences.count {
+            var isDuplicate = false
+            for sentence in finalSentences {
+                if sentence == sentences[i] {
+                    isDuplicate = true
+                    break
+                }
+            }
+            
+            if !isDuplicate {
+                print("\(sentences[i].sentence) \(sentences[i].probability)")
+                finalSentences.append(sentences[i])
+                
+                if finalSentences.count > solutionSizeLimit {
+                    break
+                }
+            }
+        }
+        
+        return finalSentences
     }
 }
