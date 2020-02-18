@@ -10,6 +10,10 @@
 		5418950E23FA3450008A3B47 /* LanguageModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5418950D23FA3450008A3B47 /* LanguageModel.swift */; };
 		5418951023FA3BB6008A3B47 /* SLMGraph.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5418950F23FA3BB6008A3B47 /* SLMGraph.swift */; };
 		5418951223FAF77C008A3B47 /* Solution.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5418951123FAF77C008A3B47 /* Solution.swift */; };
+		5418951F23FB9325008A3B47 /* syllable.txt in Resources */ = {isa = PBXBuildFile; fileRef = 5418951B23FB9324008A3B47 /* syllable.txt */; };
+		5418952023FB9325008A3B47 /* lexicon.txt in Resources */ = {isa = PBXBuildFile; fileRef = 5418951C23FB9324008A3B47 /* lexicon.txt */; };
+		5418952123FB9325008A3B47 /* bigram.txt in Resources */ = {isa = PBXBuildFile; fileRef = 5418951D23FB9325008A3B47 /* bigram.txt */; };
+		5418952223FB9325008A3B47 /* unigram.txt in Resources */ = {isa = PBXBuildFile; fileRef = 5418951E23FB9325008A3B47 /* unigram.txt */; };
 		54B045BC23F8E982003EB423 /* LexiconTree.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54B045BB23F8E982003EB423 /* LexiconTree.swift */; };
 		54B045BE23F8FA26003EB423 /* LexiconGraph.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54B045BD23F8FA26003EB423 /* LexiconGraph.swift */; };
 		54B5AD9D23EF5FA700E45988 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54B5AD9C23EF5FA700E45988 /* AppDelegate.swift */; };
@@ -18,7 +22,6 @@
 		54B5ADA623EF5FAB00E45988 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 54B5ADA523EF5FAB00E45988 /* Assets.xcassets */; };
 		54B5ADA923EF5FAB00E45988 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 54B5ADA723EF5FAB00E45988 /* LaunchScreen.storyboard */; };
 		54B5ADB623EF606300E45988 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54B5ADB523EF606300E45988 /* ViewController.swift */; };
-		54B5ADBA23EF609600E45988 /* syllable.txt in Resources */ = {isa = PBXBuildFile; fileRef = 54B5ADB823EF607F00E45988 /* syllable.txt */; };
 		54B5ADBF23EF611A00E45988 /* SyllableGraph.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54B5ADBB23EF611A00E45988 /* SyllableGraph.swift */; };
 		54B5ADC123EF611A00E45988 /* Graph.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54B5ADBD23EF611A00E45988 /* Graph.swift */; };
 		54B5ADC223EF611A00E45988 /* PinyinSequence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54B5ADBE23EF611A00E45988 /* PinyinSequence.swift */; };
@@ -28,6 +31,10 @@
 		5418950D23FA3450008A3B47 /* LanguageModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LanguageModel.swift; sourceTree = "<group>"; };
 		5418950F23FA3BB6008A3B47 /* SLMGraph.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SLMGraph.swift; sourceTree = "<group>"; };
 		5418951123FAF77C008A3B47 /* Solution.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Solution.swift; sourceTree = "<group>"; };
+		5418951B23FB9324008A3B47 /* syllable.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = syllable.txt; sourceTree = "<group>"; };
+		5418951C23FB9324008A3B47 /* lexicon.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = lexicon.txt; sourceTree = "<group>"; };
+		5418951D23FB9325008A3B47 /* bigram.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = bigram.txt; sourceTree = "<group>"; };
+		5418951E23FB9325008A3B47 /* unigram.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = unigram.txt; sourceTree = "<group>"; };
 		54B045BB23F8E982003EB423 /* LexiconTree.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LexiconTree.swift; sourceTree = "<group>"; };
 		54B045BD23F8FA26003EB423 /* LexiconGraph.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LexiconGraph.swift; sourceTree = "<group>"; };
 		54B5AD9923EF5FA700E45988 /* Pinyin2HanziEngine.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Pinyin2HanziEngine.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -38,7 +45,6 @@
 		54B5ADA823EF5FAB00E45988 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		54B5ADAA23EF5FAB00E45988 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		54B5ADB523EF606300E45988 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		54B5ADB823EF607F00E45988 /* syllable.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = syllable.txt; sourceTree = "<group>"; };
 		54B5ADBB23EF611A00E45988 /* SyllableGraph.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SyllableGraph.swift; sourceTree = "<group>"; };
 		54B5ADBD23EF611A00E45988 /* Graph.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Graph.swift; sourceTree = "<group>"; };
 		54B5ADBE23EF611A00E45988 /* PinyinSequence.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PinyinSequence.swift; sourceTree = "<group>"; };
@@ -105,7 +111,10 @@
 		54B5ADB723EF607F00E45988 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				54B5ADB823EF607F00E45988 /* syllable.txt */,
+				5418951D23FB9325008A3B47 /* bigram.txt */,
+				5418951C23FB9324008A3B47 /* lexicon.txt */,
+				5418951B23FB9324008A3B47 /* syllable.txt */,
+				5418951E23FB9325008A3B47 /* unigram.txt */,
 			);
 			name = Resources;
 			path = ../../Pinyin2HanziEngine.bak/Resources;
@@ -169,9 +178,12 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				54B5ADBA23EF609600E45988 /* syllable.txt in Resources */,
 				54B5ADA923EF5FAB00E45988 /* LaunchScreen.storyboard in Resources */,
 				54B5ADA623EF5FAB00E45988 /* Assets.xcassets in Resources */,
+				5418952023FB9325008A3B47 /* lexicon.txt in Resources */,
+				5418951F23FB9325008A3B47 /* syllable.txt in Resources */,
+				5418952123FB9325008A3B47 /* bigram.txt in Resources */,
+				5418952223FB9325008A3B47 /* unigram.txt in Resources */,
 				54B5ADA423EF5FA700E45988 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
