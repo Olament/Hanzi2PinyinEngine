@@ -26,7 +26,11 @@ class LexiconTree {
         return lexicon.count
     }
     
-    func insertPhrase(currentNode: Node, phrase: String, pinyins: [String], index: Int) {
+    func insertPhrase(phrase: String, pinyins: [String]) {
+        insertPhrase(currentNode: self.root, phrase: phrase, pinyins: pinyins, index: 0)
+    }
+    
+    private func insertPhrase(currentNode: Node, phrase: String, pinyins: [String], index: Int) {
         if !pinyinSyllable.contains(pinyins[index]) { // check if pinyin is valid
             return
         }
