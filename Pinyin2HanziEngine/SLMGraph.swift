@@ -177,7 +177,7 @@ class SLMGraph: Graph<SLMGraph.VertexData, Double> {
         calculatedPath(vertex: self.vertices[self.vertexCount - 1])
         makeSentence(currentVertex: self.vertices[self.vertexCount - 1], probability: 0.0)
         
-        sentences.sort()
+        sentences.sort(by: {$0 < $1})
         var finalSentences: [Solution] = [] // sentences w/o duplicate
         
         /* removing duplicate solution from solution set */
