@@ -42,6 +42,8 @@ class SyllableGraph: Graph<SyllableGraph.VertexData, String> {
                 }
             }
         }
+        
+        shrinkGraph()
     }
     
     /*
@@ -53,26 +55,24 @@ class SyllableGraph: Graph<SyllableGraph.VertexData, String> {
             //TODO: error handling
         }
         
-        searchForward(start: vertices[vertices.count-1])
+        searchBackward(start: self.vertices[self.vertexCount - 1])
         
         var validVerticesCount = 0 // number of vertices we will keep after "shrink"
         for vertex in vertices {
             // a vertex is valid iff it is connected to first vertex and reverse-connected to last vertex
             if vertex.data!.isBackwardAccess && vertex.data!.isBackwardAccess {
-                vertex.data?.shrinkID = validVerticesCount
+                vertex.data!.shrinkID = validVerticesCount
                 validVerticesCount += 1
             }
         }
         
+        
         // init our new vertices
         var validVertices: [Vertex] = []
         for i in 0..<validVerticesCount {
-            let vertex = Vertex(id: i)
-            let data = VertexData()
-            
-            data.shrinkID = i
-            vertex.data = data
-            validVertices.append(vertex)
+            validVertices.append(Vertex(id: i))
+            validVertices[i].data = VertexData()
+            validVertices[i].data?.shrinkID = i
         }
         
         // transfer edge to the new vertices
@@ -113,8 +113,8 @@ class SyllableGraph: Graph<SyllableGraph.VertexData, String> {
     func searchBackward(start vertex: Vertex) {
         vertex.data?.isBackwardAccess = true
         for edge in vertex.from {
-            if !edge.from.data!.isForwardAccess {
-                searchForward(start: edge.from)
+            if !edge.from.data!.isBackwardAccess {
+                searchBackward(start: edge.from)
             }
         }
     }
