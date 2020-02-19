@@ -184,7 +184,7 @@ class SLMGraph: Graph<SLMGraph.VertexData, Double> {
         for i in 0..<sentences.count {
             var isDuplicate = false
             for sentence in finalSentences {
-                if sentence == sentences[i] {
+                if sentence.sentence == sentences[i].sentence {
                     isDuplicate = true
                     break
                 }
