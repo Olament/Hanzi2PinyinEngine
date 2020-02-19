@@ -12,18 +12,27 @@ import Foundation
  This is a data structure like R-Trie, where edge is valid syllable and node store possible phrase
  */
 class LexiconTree {
-    class Node {
+    class Node: CustomStringConvertible {
         var children: [String: Node] = [:]
         var phrase: [String] = [] // the chinese phrase/vocab
+        
+        var description: String {
+            return "\(children)\n\(phrase)"
+        }
     }
     
     var root: Node = Node()
-    var pinyinSyllable: Set<String> = [] // a hash set contains valid syllable
+    var pinyinSyllable: Set<String> // a hash set contains valid syllable
     var lexicon: Set<String> = Set()
     var maxLength: Int = 0 // maximum length of phrase
     
     var count: Int {
         return lexicon.count
+    }
+    
+    /* initialize valid pinyin syllable */
+    init(pinyinSyllable: Set<String>) {
+        self.pinyinSyllable = pinyinSyllable
     }
     
     func insertPhrase(phrase: String, pinyins: [String]) {
@@ -40,7 +49,7 @@ class LexiconTree {
             child = node
         } else {
             child = Node()
-            currentNode.children[pinyins[index]] = child
+            currentNode.children[pinyins[index]] = Node()
         }
         
         if index == pinyins.count - 1 { // reach the end of tree
