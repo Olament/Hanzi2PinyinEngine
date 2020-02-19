@@ -15,23 +15,23 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" editable="NO" textAlignment="natural" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XMC-jp-9Jt" userLabel="OutputField">
-                                <rect key="frame" x="87" y="460" width="240" height="229"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" textAlignment="natural" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XMC-jp-9Jt" userLabel="OutputField">
+                                <rect key="frame" x="87" y="378" width="240" height="250"/>
                                 <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="250" id="yII-AF-kUs"/>
+                                </constraints>
                                 <color key="textColor" systemColor="labelColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
-                            <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="bVU-iT-Xmf" userLabel="InputField">
-                                <rect key="frame" x="84" y="358" width="246" height="34"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="bVU-iT-Xmf" userLabel="InputField">
+                                <rect key="frame" x="20" y="294" width="374" height="34"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Uh8-Zp-jIg">
-                                <rect key="frame" x="175" y="400" width="65" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Uh8-Zp-jIg">
+                                <rect key="frame" x="100" y="338" width="214" height="30"/>
                                 <state key="normal" title="Inference"/>
                                 <connections>
                                     <action selector="getSentence:" destination="BYZ-38-t0r" eventType="touchUpInside" id="nHN-le-Lt3"/>
@@ -39,6 +39,19 @@
                             </button>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <constraints>
+                            <constraint firstItem="bVU-iT-Xmf" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="6Ds-a3-8mk"/>
+                            <constraint firstItem="XMC-jp-9Jt" firstAttribute="top" secondItem="Uh8-Zp-jIg" secondAttribute="bottom" constant="10" id="9p4-Wl-zbs"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="Uh8-Zp-jIg" secondAttribute="trailing" constant="100" id="ApB-OK-beK"/>
+                            <constraint firstItem="Uh8-Zp-jIg" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="100" id="Bp2-5I-L76"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="XMC-jp-9Jt" secondAttribute="trailing" constant="87" id="EG6-dv-8PB"/>
+                            <constraint firstItem="Uh8-Zp-jIg" firstAttribute="top" secondItem="bVU-iT-Xmf" secondAttribute="bottom" constant="10" id="HNl-JT-2Lx"/>
+                            <constraint firstItem="bVU-iT-Xmf" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="YTf-fU-Wxd"/>
+                            <constraint firstItem="bVU-iT-Xmf" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="250" id="YYg-sd-HXX"/>
+                            <constraint firstItem="XMC-jp-9Jt" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="87" id="gKN-4c-sCb"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="bVU-iT-Xmf" secondAttribute="trailing" constant="20" id="wqO-ZQ-k2w"/>
+                            <constraint firstItem="XMC-jp-9Jt" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="y8W-TH-CzG"/>
+                        </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <connections>
