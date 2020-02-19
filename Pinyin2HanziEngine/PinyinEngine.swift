@@ -49,7 +49,6 @@ class PinyinEngine {
         
         // init unigram
         print("load unigram")
-        var unigram: [String: Double] = [:]
         if let path = Bundle.main.path(forResource: "unigram", ofType: "txt") {
             do {
                 let data = try String(contentsOfFile: path, encoding: .utf8)
@@ -67,7 +66,6 @@ class PinyinEngine {
 
         //init bigram
         print("load bigram")
-        var bigram: [String: [String: Double]] = [:]
         if let path = Bundle.main.path(forResource: "bigram", ofType: "txt") {
             do {
                 let data = try String(contentsOfFile: path, encoding: .utf8)
@@ -101,7 +99,7 @@ class PinyinEngine {
         }
     }
     
-    func getSentence(pinyin: String, sizeLimit: Int) -> [Solution] {
+    func getSentence(pinyin: String) -> [Solution] {
         // init syllable graph
         print("initialize syllable graph")
         let syllableGraph = SyllableGraph(pinyin: pinyin, validSyllable: self.syllableSet)
