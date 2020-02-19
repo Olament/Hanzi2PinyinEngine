@@ -25,6 +25,7 @@
 		54B5ADBF23EF611A00E45988 /* SyllableGraph.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54B5ADBB23EF611A00E45988 /* SyllableGraph.swift */; };
 		54B5ADC123EF611A00E45988 /* Graph.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54B5ADBD23EF611A00E45988 /* Graph.swift */; };
 		54B5ADC223EF611A00E45988 /* PinyinSequence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54B5ADBE23EF611A00E45988 /* PinyinSequence.swift */; };
+		54F762EB23FCE5550074E4AC /* PinyinEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54F762EA23FCE5550074E4AC /* PinyinEngine.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -48,6 +49,7 @@
 		54B5ADBB23EF611A00E45988 /* SyllableGraph.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SyllableGraph.swift; sourceTree = "<group>"; };
 		54B5ADBD23EF611A00E45988 /* Graph.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Graph.swift; sourceTree = "<group>"; };
 		54B5ADBE23EF611A00E45988 /* PinyinSequence.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PinyinSequence.swift; sourceTree = "<group>"; };
+		54F762EA23FCE5550074E4AC /* PinyinEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinyinEngine.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -90,6 +92,7 @@
 				54B5ADBE23EF611A00E45988 /* PinyinSequence.swift */,
 				5418950D23FA3450008A3B47 /* LanguageModel.swift */,
 				5418950F23FA3BB6008A3B47 /* SLMGraph.swift */,
+				54F762EA23FCE5550074E4AC /* PinyinEngine.swift */,
 				54B5ADB523EF606300E45988 /* ViewController.swift */,
 				54B5ADAA23EF5FAB00E45988 /* Info.plist */,
 			);
@@ -197,6 +200,7 @@
 			files = (
 				54B5ADC123EF611A00E45988 /* Graph.swift in Sources */,
 				5418950E23FA3450008A3B47 /* LanguageModel.swift in Sources */,
+				54F762EB23FCE5550074E4AC /* PinyinEngine.swift in Sources */,
 				54B045BE23F8FA26003EB423 /* LexiconGraph.swift in Sources */,
 				5418951023FA3BB6008A3B47 /* SLMGraph.swift in Sources */,
 				5418951223FAF77C008A3B47 /* Solution.swift in Sources */,
