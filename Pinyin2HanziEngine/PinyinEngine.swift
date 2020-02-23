@@ -7,12 +7,14 @@
 //
 
 import Foundation
+import SQLite
 
 class PinyinEngine {
     var syllableSet: Set<String> = Set()
     var lexiconTree: LexiconTree
-    var unigram: [String: Double] = [:]
-    var bigram: [String: [String: Double]] = [:]
+    //var unigram: [String: Double] = [:]
+    //var bigram: [String: [String: Double]] = [:]
+    var database: Connection!
     
     init() {
         // init syllable
@@ -47,6 +49,7 @@ class PinyinEngine {
             }
         }
         
+        /*
         // init unigram
         print("load unigram")
         if let path = Bundle.main.path(forResource: "unigram", ofType: "txt") {
@@ -97,6 +100,15 @@ class PinyinEngine {
                 print(error)
             }
         }
+        */
+        
+        let path = Bundle.main.path(forResource: "database", ofType: "sqlite3")!
+        do {
+            let db = try Connection(path, readonly: true)
+            self.database = db
+        } catch {
+            print("Cannot find database")
+        }
     }
     
     func getSentence(pinyin: String) -> [Solution] {
@@ -112,7 +124,7 @@ class PinyinEngine {
                 
         // langauge model
         print("initialize language model")
-        let languageModel = LanguageModel(lexicon: lexiconTree, unigram: unigram, bigram: bigram)
+        let languageModel = LanguageModel(lexicon: lexiconTree, databaseConnection: database)
         print("initialize SLMGraph")
         let slmGraph = SLMGraph(lexiconGraph: lexiconGraph, model: languageModel, limit: 6)
 
