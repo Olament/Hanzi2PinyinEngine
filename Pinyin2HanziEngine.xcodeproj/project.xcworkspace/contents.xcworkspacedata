@@ -2,6 +2,9 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "self:Pinyin2HanziEngine.xcodeproj">
+      location = "group:../Pinyin2HanziEngine/Resources/database.sqlite3">
+   </FileRef>
+   <FileRef
+      location = "self:">
    </FileRef>
 </Workspace>
