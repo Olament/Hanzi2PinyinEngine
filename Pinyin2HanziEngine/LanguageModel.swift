@@ -15,10 +15,9 @@ class LanguageModel {
     let infiniteEstimation: Double = 1e-100
 
     var lexicon: LexiconTree
-    //var unigram: [String: Double] = [:]
-    //var bigram: [String: [String: Double]] = [:]
-
     var db: DatabaseQueue // connection to unigram/bigram databse
+    
+    var cache: [UInt64: Double] = [:] // TODO: add LRU cache
 
     init(lexicon: LexiconTree, databaseConnection connection: DatabaseQueue) {
         self.lexicon = lexicon
@@ -28,10 +27,18 @@ class LanguageModel {
     /* get P(w_i) */
     func getUnigram(phrase: String) -> Double {
         var probability: Double = self.infiniteEstimation
-
-        db.read { db in
-            if let prob = try? Double.fetchOne(db, sql: "SELECT probability from unigram where hash = ?", arguments: [phrase.stableHash]) {
-                probability = prob
+        let hash = phrase.stableHash
+        
+        if let prob = cache[hash] {
+            return prob
+        } else {
+            db.read { db in
+                if let prob = try? Double.fetchOne(db, sql: "SELECT probability from unigram where hash = ?", arguments: [hash]) {
+                    probability = prob
+                    cache[hash] = prob
+                } else {
+                    cache[hash] = self.infiniteEstimation
+                }
             }
         }
 
@@ -43,17 +50,25 @@ class LanguageModel {
         var delta: Double = 0.0
         var probability: Double = 0.0
         
-        let phrase = phrase1 + " " + phrase2 // for P(phrase1|phrase2)
-        let phrase1_unknown = phrase1 + " " + self.unknown // for P(phrase1|unknown)
-        let unknown_phrase2 = self.unknown + " " + phrase2 // for P(unknown|phrase2)
-        
-        db.read{ db in
-            if let prob = try? Double.fetchOne(db, sql: "SELECT probability from unigram where hash = ?", arguments: [phrase.stableHash]) {
-                probability = prob
-            } else if let prob = try? Double.fetchOne(db, sql: "SELECT probability from unigram where hash = ?", arguments: [phrase1_unknown.stableHash]) {
-                delta = prob
-            } else if let prob = try? Double.fetchOne(db, sql: "SELECT probability from unigram where hash = ?", arguments: [unknown_phrase2.stableHash]) {
-                delta = prob
+        let phraseHash = (phrase1 + " " + phrase2).stableHash
+        let phraseUnknownHash = (phrase1 + " " + self.unknown).stableHash
+        let unknownPhraseHash = (self.unknown + " " + phrase2).stableHash
+                
+        if let prob = cache[phraseHash] {
+            return prob
+        } else if let prob = cache[phraseUnknownHash] {
+            delta = prob
+        } else if let prob = cache[unknownPhraseHash] {
+            delta = prob
+        } else {
+            db.read{ db in
+                if let prob = try? Double.fetchOne(db, sql: "SELECT probability from unigram where hash = ?", arguments: [phraseHash]) {
+                    probability = prob
+                } else if let prob = try? Double.fetchOne(db, sql: "SELECT probability from unigram where hash = ?", arguments: [phraseUnknownHash]) {
+                    delta = prob
+                } else if let prob = try? Double.fetchOne(db, sql: "SELECT probability from unigram where hash = ?", arguments: [unknownPhraseHash]) {
+                    delta = prob
+                }
             }
         }
         
