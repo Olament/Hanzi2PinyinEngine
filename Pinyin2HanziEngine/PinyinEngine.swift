@@ -7,15 +7,15 @@
 //
 
 import Foundation
-import SQLite
+import GRDB
 
 class PinyinEngine {
     var syllableSet: Set<String> = Set()
     var lexiconTree: LexiconTree
     //var unigram: [String: Double] = [:]
     //var bigram: [String: [String: Double]] = [:]
-    var database: Connection!
-    
+    var database: DatabaseQueue!
+
     init() {
         // init syllable
         print("load valid syllable")
@@ -101,14 +101,6 @@ class PinyinEngine {
             }
         }
         */
-        
-        let path = Bundle.main.path(forResource: "database", ofType: "sqlite3")!
-        do {
-            let db = try Connection(path, readonly: true)
-            self.database = db
-        } catch {
-            print("Cannot find database")
-        }
     }
     
     func getSentence(pinyin: String) -> [Solution] {
@@ -130,5 +122,16 @@ class PinyinEngine {
 
         print("make sentence")
         return slmGraph.makeSentence()
+    }
+}
+
+extension String {
+    var stableHash: UInt64 {
+        var result = UInt64 (5381)
+        let buf = [UInt8](self.utf8)
+        for b in buf {
+            result = 127 * (result & 0x00ffffffffffffff) + UInt64(b)
+        }
+        return result
     }
 }
