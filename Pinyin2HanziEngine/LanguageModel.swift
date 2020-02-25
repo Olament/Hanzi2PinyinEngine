@@ -29,33 +29,34 @@ class LanguageModel {
     func getUnigram(phrase: String) -> Double {
         var probability: Double = self.infiniteEstimation
 
-        try db.read { db in
+        db.read { db in
             if let prob = try? Double.fetchOne(db, sql: "SELECT probability from unigram where hash = ?", arguments: [phrase.stableHash]) {
-                print(prob)
                 probability = prob
-            } else {
-                print("failed to search \(phrase) with hash: \(phrase.stableHash)")
             }
         }
 
-        //print(probability)
         return probability
     }
 
     /* get P(w_i|w_j) */
     func getBigram(phrase1: String, phrase2: String) -> Double {
         var delta: Double = 0.0
-//        if let dict = bigram[phrase1] {
-//            if let prob = dict[phrase2] {
-//                return prob // P(phrase1|phrase2)
-//            } else if let unknownProb = dict[unknown] {
-//                delta = unknownProb // P(phrase1|unknown)
-//            }
-//        } else if let unknownDict = bigram[unknown] {
-//            if let unknownPhrase2 = unknownDict[phrase2] {
-//                delta = unknownPhrase2 // p(unknown|phrase2)
-//            }
-//        }
-        return getUnigram(phrase: phrase1) * getUnigram(phrase: phrase2) * (Darwin.M_E + delta)
+        var probability: Double = 0.0
+        
+        let phrase = phrase1 + " " + phrase2 // for P(phrase1|phrase2)
+        let phrase1_unknown = phrase1 + " " + self.unknown // for P(phrase1|unknown)
+        let unknown_phrase2 = self.unknown + " " + phrase2 // for P(unknown|phrase2)
+        
+        db.read{ db in
+            if let prob = try? Double.fetchOne(db, sql: "SELECT probability from unigram where hash = ?", arguments: [phrase.stableHash]) {
+                probability = prob
+            } else if let prob = try? Double.fetchOne(db, sql: "SELECT probability from unigram where hash = ?", arguments: [phrase1_unknown.stableHash]) {
+                delta = prob
+            } else if let prob = try? Double.fetchOne(db, sql: "SELECT probability from unigram where hash = ?", arguments: [unknown_phrase2.stableHash]) {
+                delta = prob
+            }
+        }
+        
+        return probability != 0.0 ? probability : getUnigram(phrase: phrase1) * getUnigram(phrase: phrase2) * (Darwin.M_E + delta)
     }
 }
