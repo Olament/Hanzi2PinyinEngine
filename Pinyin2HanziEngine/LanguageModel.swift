@@ -8,40 +8,40 @@
 
 import Foundation
 import Darwin
-import SQLite
+import GRDB
 
 class LanguageModel {
     let unknown = "<unknown>"
     let infiniteEstimation: Double = 1e-100
-    
+
     var lexicon: LexiconTree
     //var unigram: [String: Double] = [:]
     //var bigram: [String: [String: Double]] = [:]
-    
-    var db: Connection! // connection to unigram/bigram databse
-    let grams = Table("grams")
-    let hash = Expression<Int>("hash")
-    let probability = Expression<Double>("probability")
-    
-    init(lexicon: LexiconTree, databaseConnection connection: Connection) {
+
+    var db: DatabaseQueue // connection to unigram/bigram databse
+
+    init(lexicon: LexiconTree, databaseConnection connection: DatabaseQueue) {
         self.lexicon = lexicon
         self.db = connection
     }
-    
+
     /* get P(w_i) */
     func getUnigram(phrase: String) -> Double {
-        let query = grams.select(probability).where(hash == phrase.hashValue).limit(1)
-        do {
-            for row in try db.prepare(query) {
-                return row[probability]
+        var probability: Double = self.infiniteEstimation
+
+        try db.read { db in
+            if let prob = try? Double.fetchOne(db, sql: "SELECT probability from unigram where hash = ?", arguments: [phrase.stableHash]) {
+                print(prob)
+                probability = prob
+            } else {
+                print("failed to search \(phrase) with hash: \(phrase.stableHash)")
             }
-        } catch {
-            // do nothing
         }
-        
-        return infiniteEstimation
+
+        //print(probability)
+        return probability
     }
-    
+
     /* get P(w_i|w_j) */
     func getBigram(phrase1: String, phrase2: String) -> Double {
         var delta: Double = 0.0
@@ -59,4 +59,3 @@ class LanguageModel {
         return getUnigram(phrase: phrase1) * getUnigram(phrase: phrase2) * (Darwin.M_E + delta)
     }
 }
-

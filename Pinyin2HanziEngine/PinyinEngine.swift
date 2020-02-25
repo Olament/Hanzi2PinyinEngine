@@ -49,6 +49,15 @@ class PinyinEngine {
             }
         }
         
+        if let path = Bundle.main.path(forResource: "db", ofType: "sqlite3") {
+            do {
+                let db = try DatabaseQueue(path: path)
+                self.database = db
+            } catch {
+                print("failed to load database")
+            }
+        }
+        
         /*
         // init unigram
         print("load unigram")
