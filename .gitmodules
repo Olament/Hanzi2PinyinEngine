@@ -1,3 +1,6 @@
 [submodule "framework/SQLite.swift"]
 	path = framework/SQLite.swift
 	url = https://github.com/stephencelis/SQLite.swift.git
+[submodule "framework/GRDB.swift"]
+	path = framework/GRDB.swift
+	url = https://github.com/groue/GRDB.swift.git
