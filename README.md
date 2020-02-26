@@ -1,6 +1,10 @@
-# Hanzi2PinyinEngine
-<p align="center">
+<h1 align="center">
+  <br>
+    Hanzi2PinyinEngine
+  </br>
   <img src="https://github.com/Olament/Hanzi2PinyinEngine/blob/master/imgs/demo.png" width="400">
+</h1>
+<p align="center">
   <br>
     An out-of-the-box Pinyin to Hanzi Inference Engine 开箱即用的中文拼音输入法引擎
   </br>
