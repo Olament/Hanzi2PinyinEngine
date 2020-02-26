@@ -8,7 +8,20 @@
 import Foundation
 
 
-class SyllableGraph: Graph<SyllableGraph.VertexData, String> {
+class SyllableGraph: Graph<SyllableGraph.VertexData, String>, CustomStringConvertible {
+    
+    var description: String {
+        var desc: String = ""
+        for edge in edges {
+            if edge.from.data!.shrinkID == -1 || edge.to.data!.shrinkID == -1 {
+                continue
+            }
+            
+            desc.append("\(edge.from.data!.shrinkID) \(edge.to.data!.shrinkID) \"\(edge.data!)\"\n")
+        }
+        
+        return desc
+    }
     
     class VertexData {
         var isForwardAccess: Bool = false
@@ -23,13 +36,11 @@ class SyllableGraph: Graph<SyllableGraph.VertexData, String> {
         self.pinyinString = pinyin
         self.validSyllable = validSyllable
         
-        super.init()
+        super.init(numberOfVertices: self.pinyinString.count+1)
         
         /* init vertices */
-        for i in 0...pinyinString.count { // pinyin.count + 1 vertices in total
-            let data = VertexData()
-            vertices.append(Vertex(id: i))
-            vertices[i].data = data
+        for i in 0..<self.vertices.count { // pinyin.count + 1 vertices in total
+            vertices[i].data = VertexData()
         }
         
         /* init edges */
@@ -42,7 +53,7 @@ class SyllableGraph: Graph<SyllableGraph.VertexData, String> {
                 }
             }
         }
-        
+                
         shrinkGraph()
     }
     
@@ -60,7 +71,7 @@ class SyllableGraph: Graph<SyllableGraph.VertexData, String> {
         var validVerticesCount = 0 // number of vertices we will keep after "shrink"
         for vertex in vertices {
             // a vertex is valid iff it is connected to first vertex and reverse-connected to last vertex
-            if vertex.data!.isBackwardAccess && vertex.data!.isBackwardAccess {
+            if vertex.data!.isForwardAccess && vertex.data!.isBackwardAccess {
                 vertex.data!.shrinkID = validVerticesCount
                 validVerticesCount += 1
             }
@@ -72,7 +83,7 @@ class SyllableGraph: Graph<SyllableGraph.VertexData, String> {
         for i in 0..<validVerticesCount {
             validVertices.append(Vertex(id: i))
             validVertices[i].data = VertexData()
-            validVertices[i].data?.shrinkID = i
+            validVertices[i].data!.shrinkID = i
         }
         
         // transfer edge to the new vertices
@@ -98,7 +109,7 @@ class SyllableGraph: Graph<SyllableGraph.VertexData, String> {
      Connected: there exist a walk from start vertex to vertex i
      */
     func searchForward(start vertex: Vertex) {
-        vertex.data?.isForwardAccess = true
+        vertex.data!.isForwardAccess = true
         for edge in vertex.to {
             if !edge.to.data!.isForwardAccess {
                 searchForward(start: edge.to)
@@ -111,7 +122,7 @@ class SyllableGraph: Graph<SyllableGraph.VertexData, String> {
      Reverse-connected: there exist a walk from vertex i to start vertex
      */
     func searchBackward(start vertex: Vertex) {
-        vertex.data?.isBackwardAccess = true
+        vertex.data!.isBackwardAccess = true
         for edge in vertex.from {
             if !edge.from.data!.isBackwardAccess {
                 searchBackward(start: edge.from)
@@ -123,7 +134,7 @@ class SyllableGraph: Graph<SyllableGraph.VertexData, String> {
     var pinyinSequences: [PinyinSequence] = []
     
     func getPinyinSequence(maxLength: Int) -> [PinyinSequence] {
-        for i in 0..<vertexCount {
+        for i in 0..<self.vertices.count {
             pinyinSequenceSearch(v: vertices[i], from: i, limit: maxLength)
         }
         
