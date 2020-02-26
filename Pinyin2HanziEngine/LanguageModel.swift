@@ -47,6 +47,7 @@ class LanguageModel {
     func getBigram(phrase1: String, phrase2: String) -> Double {
         var delta: Double = 0.0
         var probability: Double = 0.0
+        var layerHit = 0 // mark which query layer it hits
         
         let phraseHash = (phrase1 + " " + phrase2).stableHash
         let phraseUnknownHash = (phrase1 + " " + self.unknown).stableHash
@@ -55,25 +56,33 @@ class LanguageModel {
         if let prob = cache[phraseHash] {
             return prob
         } else if let prob = cache[phraseUnknownHash] {
-            delta = prob
+            return prob
         } else if let prob = cache[unknownPhraseHash] {
-            delta = prob
+            return prob
         } else {
             db.read{ db in
                 if let prob = try? Double.fetchOne(db, sql: "SELECT probability from bigram where hash = ?", arguments: [phraseHash]) {
                     probability = prob
                 } else if let prob = try? Double.fetchOne(db, sql: "SELECT probability from bigram where hash = ?", arguments: [phraseUnknownHash]) {
                     delta = prob
-                    cache[phraseUnknownHash] = prob
+                    layerHit = 1
                 } else if let prob = try? Double.fetchOne(db, sql: "SELECT probability from bigram where hash = ?", arguments: [unknownPhraseHash]) {
                     delta = prob
-                    cache[unknownPhraseHash] = prob
+                    layerHit = 2
                 }
             }
         }
         
-        let result = probability != 0.0 ? probability : getUnigram(phrase: phrase1) * getUnigram(phrase: phrase2) * (self.E + delta)
-        cache[phraseHash] = result
+        let result = probability != 0 ? probability : getUnigram(phrase: phrase1) * getUnigram(phrase: phrase2) * (self.E + delta)
+        
+        switch layerHit {
+        case 1:
+            cache[phraseUnknownHash] = result
+        case 2:
+            cache[unknownPhraseHash] = result
+        default:
+            cache[phraseUnknownHash] = result
+        }
         
         return result
     }
