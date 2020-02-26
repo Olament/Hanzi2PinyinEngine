@@ -24,9 +24,9 @@
 		54B5ADC123EF611A00E45988 /* Graph.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54B5ADBD23EF611A00E45988 /* Graph.swift */; };
 		54B5ADC223EF611A00E45988 /* PinyinSequence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54B5ADBE23EF611A00E45988 /* PinyinSequence.swift */; };
 		54C3CBCF2405196800E03519 /* script.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54C3CBCE2405196800E03519 /* script.swift */; };
-		54C3CBD82405885000E03519 /* db.sqlite3 in Resources */ = {isa = PBXBuildFile; fileRef = 54C3CBD72405885000E03519 /* db.sqlite3 */; };
 		54C3CBDA2405AD0500E03519 /* GRDB.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5449875824042F360050D391 /* GRDB.framework */; };
 		54C3CBDB2405AD0500E03519 /* GRDB.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 5449875824042F360050D391 /* GRDB.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		54C3CBDF2406032A00E03519 /* db.sqlite3 in Resources */ = {isa = PBXBuildFile; fileRef = 54C3CBDE2406032A00E03519 /* db.sqlite3 */; };
 		54F762EB23FCE5550074E4AC /* PinyinEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54F762EA23FCE5550074E4AC /* PinyinEngine.swift */; };
 /* End PBXBuildFile section */
 
@@ -131,7 +131,7 @@
 		54B5ADBD23EF611A00E45988 /* Graph.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Graph.swift; sourceTree = "<group>"; };
 		54B5ADBE23EF611A00E45988 /* PinyinSequence.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PinyinSequence.swift; sourceTree = "<group>"; };
 		54C3CBCE2405196800E03519 /* script.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = script.swift; sourceTree = "<group>"; };
-		54C3CBD72405885000E03519 /* db.sqlite3 */ = {isa = PBXFileReference; lastKnownFileType = file; path = db.sqlite3; sourceTree = "<group>"; };
+		54C3CBDE2406032A00E03519 /* db.sqlite3 */ = {isa = PBXFileReference; lastKnownFileType = file; name = db.sqlite3; path = Pinyin2HanziEngine/Resources/db.sqlite3; sourceTree = SOURCE_ROOT; };
 		54F762EA23FCE5550074E4AC /* PinyinEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinyinEngine.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -216,7 +216,7 @@
 		54B5ADB723EF607F00E45988 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				54C3CBD72405885000E03519 /* db.sqlite3 */,
+				54C3CBDE2406032A00E03519 /* db.sqlite3 */,
 				5420D4D623FCF3E100E1F7E1 /* lexicon.txt */,
 				5420D4D723FCF3E100E1F7E1 /* syllable.txt */,
 			);
@@ -367,7 +367,7 @@
 				54B5ADA923EF5FAB00E45988 /* LaunchScreen.storyboard in Resources */,
 				54B5ADA623EF5FAB00E45988 /* Assets.xcassets in Resources */,
 				5420D4DB23FCF3E200E1F7E1 /* syllable.txt in Resources */,
-				54C3CBD82405885000E03519 /* db.sqlite3 in Resources */,
+				54C3CBDF2406032A00E03519 /* db.sqlite3 in Resources */,
 				54B5ADA423EF5FA700E45988 /* Main.storyboard in Resources */,
 				5420D4DA23FCF3E200E1F7E1 /* lexicon.txt in Resources */,
 			);
