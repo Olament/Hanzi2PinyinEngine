@@ -7,12 +7,12 @@
 //
 
 import Foundation
-import Darwin
 import GRDB
 
 class LanguageModel {
     let unknown = "<unknown>"
     let infiniteEstimation: Double = 1e-100
+    let E: Double = 2.71828
 
     var lexicon: LexiconTree
     var db: DatabaseQueue // connection to unigram/bigram databse
@@ -35,13 +35,11 @@ class LanguageModel {
             db.read { db in
                 if let prob = try? Double.fetchOne(db, sql: "SELECT probability from unigram where hash = ?", arguments: [hash]) {
                     probability = prob
-                    cache[hash] = prob
-                } else {
-                    cache[hash] = self.infiniteEstimation
                 }
             }
         }
 
+        cache[hash] = probability
         return probability
     }
 
@@ -53,7 +51,7 @@ class LanguageModel {
         let phraseHash = (phrase1 + " " + phrase2).stableHash
         let phraseUnknownHash = (phrase1 + " " + self.unknown).stableHash
         let unknownPhraseHash = (self.unknown + " " + phrase2).stableHash
-                
+                        
         if let prob = cache[phraseHash] {
             return prob
         } else if let prob = cache[phraseUnknownHash] {
@@ -62,16 +60,21 @@ class LanguageModel {
             delta = prob
         } else {
             db.read{ db in
-                if let prob = try? Double.fetchOne(db, sql: "SELECT probability from unigram where hash = ?", arguments: [phraseHash]) {
+                if let prob = try? Double.fetchOne(db, sql: "SELECT probability from bigram where hash = ?", arguments: [phraseHash]) {
                     probability = prob
-                } else if let prob = try? Double.fetchOne(db, sql: "SELECT probability from unigram where hash = ?", arguments: [phraseUnknownHash]) {
+                } else if let prob = try? Double.fetchOne(db, sql: "SELECT probability from bigram where hash = ?", arguments: [phraseUnknownHash]) {
                     delta = prob
-                } else if let prob = try? Double.fetchOne(db, sql: "SELECT probability from unigram where hash = ?", arguments: [unknownPhraseHash]) {
+                    cache[phraseUnknownHash] = prob
+                } else if let prob = try? Double.fetchOne(db, sql: "SELECT probability from bigram where hash = ?", arguments: [unknownPhraseHash]) {
                     delta = prob
+                    cache[unknownPhraseHash] = prob
                 }
             }
         }
         
-        return probability != 0.0 ? probability : getUnigram(phrase: phrase1) * getUnigram(phrase: phrase2) * (Darwin.M_E + delta)
+        let result = probability != 0.0 ? probability : getUnigram(phrase: phrase1) * getUnigram(phrase: phrase2) * (self.E + delta)
+        cache[phraseHash] = result
+        
+        return result
     }
 }
