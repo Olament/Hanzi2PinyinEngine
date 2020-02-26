@@ -48,8 +48,8 @@ class LexiconTree {
         if let node = currentNode.children[pinyins[index]] { // check if we have a child with pinyin[index] already
             child = node
         } else {
-            child = Node()
             currentNode.children[pinyins[index]] = Node()
+            child = currentNode.children[pinyins[index]]!
         }
         
         if index == pinyins.count - 1 { // reach the end of tree
