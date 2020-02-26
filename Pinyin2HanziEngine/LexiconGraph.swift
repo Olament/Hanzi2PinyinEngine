@@ -20,7 +20,7 @@ class EdgeData {
     }
 }
 
-class LexiconGraph: Graph<Int, EdgeData> {
+class LexiconGraph: Graph<Int, EdgeData>, CustomStringConvertible {
     init(numberOfVertex count: Int, pinyinSequences: [PinyinSequence], tree: LexiconTree) {
         super.init(numberOfVertices: count)
         
@@ -32,5 +32,13 @@ class LexiconGraph: Graph<Int, EdgeData> {
                 }
             }
         }
+    }
+    
+    var description: String {
+        var desc: String = ""
+        for edge in self.edges {
+            desc.append("\(edge.from.id) \(edge.to.id) \"\(edge.data!.pinyinSequence)\" \"\(edge.data!.phrase)\"\n")
+        }
+        return desc
     }
 }
