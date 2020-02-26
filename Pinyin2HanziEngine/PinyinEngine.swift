@@ -12,6 +12,7 @@ import GRDB
 class PinyinEngine {
     var syllableSet: Set<String> = Set()
     var lexiconTree: LexiconTree
+    var languageModel: LanguageModel
     var database: DatabaseQueue!
 
     init() {
@@ -55,27 +56,41 @@ class PinyinEngine {
                 print("failed to load database")
             }
         }
+        
+        self.languageModel = LanguageModel(lexicon: lexiconTree, databaseConnection: database)
     }
     
     func getSentence(pinyin: String) -> [Solution] {
+        var time: [DispatchTime] = []
         // init syllable graph
+        time.append(DispatchTime.now())
         print("initialize syllable graph")
         let syllableGraph = SyllableGraph(pinyin: pinyin, validSyllable: self.syllableSet)
+        time.append(DispatchTime.now())
         
         // init lexicon graph
         print("initialize lexicon graph")
         let lexiconGraph = LexiconGraph(numberOfVertex: syllableGraph.vertexCount,
                                         pinyinSequences: syllableGraph.getPinyinSequence(maxLength: 5),
                                         tree: lexiconTree)
+        time.append(DispatchTime.now())
+        
                 
-        // langauge model
-        print("initialize language model")
-        let languageModel = LanguageModel(lexicon: lexiconTree, databaseConnection: database)
         print("initialize SLMGraph")
         let slmGraph = SLMGraph(lexiconGraph: lexiconGraph, model: languageModel, limit: 5)
+        time.append(DispatchTime.now())
 
         print("make sentence")
-        return slmGraph.makeSentence()
+        let result = slmGraph.makeSentence()
+        time.append(DispatchTime.now())
+        
+        let description = ["syllable graph", "lexicon graph", "SLMGraph", "Make sentence"]
+        for i in 1..<time.count {
+            let elapsed = Double(time[i].uptimeNanoseconds - time[i-1].uptimeNanoseconds) / 1_000_000
+            print("\(description[i-1]): \(elapsed)")
+        }
+        
+        return result
     }
 }
 
