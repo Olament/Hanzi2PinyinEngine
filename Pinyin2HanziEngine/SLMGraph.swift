@@ -9,7 +9,7 @@
 import Foundation
 
 
-class SLMGraph: Graph<SLMGraph.VertexData, Double> {
+class SLMGraph: Graph<SLMGraph.VertexData, Double>, CustomStringConvertible {
     class VertexData {
         var phrase: String?
         var pinyinSequence: PinyinSequence?
@@ -70,12 +70,17 @@ class SLMGraph: Graph<SLMGraph.VertexData, Double> {
     var solutionSizeLimit: Int
     
     init(lexiconGraph: LexiconGraph, model: LanguageModel, limit: Int) {
+        var time: [DispatchTime] = []
+        
         self.solutionSizeLimit = limit
+        time.append(DispatchTime.now())
         super.init(numberOfVertices: lexiconGraph.edgeCount + 2)
+        time.append(DispatchTime.now())
         
         for vertex in self.vertices {
             vertex.data = VertexData(solutionSizeLimit: self.solutionSizeLimit)
         }
+        time.append(DispatchTime.now())
         
         /* making line graph of lexicon graph */
         
@@ -84,14 +89,17 @@ class SLMGraph: Graph<SLMGraph.VertexData, Double> {
             self.vertices[edge.data!.id].data?.phrase = edge.data?.phrase
             self.vertices[edge.data!.id].data?.pinyinSequence = edge.data?.pinyinSequence
         }
+        time.append(DispatchTime.now())
         
         for edge in lexiconGraph.vertices[0].to {
             _ = addEdge(from: 0, to: edge.data!.id, weight: model.getUnigram(phrase: edge.data!.phrase))
         }
+        time.append(DispatchTime.now())
         
         for edge in lexiconGraph.vertices[lexiconGraph.vertices.count - 1].from {
             _ = addEdge(from: edge.data!.id, to: self.vertexCount - 1, weight: 1.0)
         }
+        time.append(DispatchTime.now())
         
         self.vertices[0].data!.phrase = "(S)"
         self.vertices[vertexCount-1].data!.phrase = "(E)"
@@ -108,11 +116,19 @@ class SLMGraph: Graph<SLMGraph.VertexData, Double> {
                 }
             }
         }
+        
+        time.append(DispatchTime.now())
+        
+        let description = ["Init base graph", "Set solution limit", "add vertex to SLM", "add vertex to start", "add vertex to end", "add edge"]
+        for i in 1..<time.count {
+            let elapsed = Double(time[i].uptimeNanoseconds - time[i-1].uptimeNanoseconds) / 1_000_000
+            print("  \(description[i-1]): \(elapsed)")
+        }
     }
     
     func addEdge(from: Int, to: Int, weight: Double) -> Graph<SLMGraph.VertexData, Double>.Edge {
         let edge = super.addEdge(from: self.vertices[from], to: self.vertices[to])
-        edge.data = log2(weight)
+        edge.data = log(weight)
         return edge
     }
     
@@ -121,12 +137,13 @@ class SLMGraph: Graph<SLMGraph.VertexData, Double> {
         
         for edge in current.from {
             let prev = edge.from
+            let weight = edge.data!
             if !prev.data!.isCalculated {
                 calculatedPath(vertex: prev)
             }
             
             for prevDistance in (prev.data?.distanceSet.distanceList)! {
-                if !current.data!.distanceSet.add(newDistance: Distance(distance: prevDistance.distance, edge: edge)) {
+                if !current.data!.distanceSet.add(newDistance: Distance(distance: prevDistance.distance + weight, edge: edge)) {
                     break // do not ask me why
                 }
             }
@@ -191,7 +208,7 @@ class SLMGraph: Graph<SLMGraph.VertexData, Double> {
             }
             
             if !isDuplicate {
-                print("\(sentences[i].sentence) \(sentences[i].probability)")
+                print("\(sentences[i].sentence) \(sentences[i].probability) \(sentences[i].pinyin)")
                 finalSentences.append(sentences[i])
                 
                 if finalSentences.count > solutionSizeLimit {
@@ -201,5 +218,15 @@ class SLMGraph: Graph<SLMGraph.VertexData, Double> {
         }
         
         return finalSentences
+    }
+    
+    var description: String {
+        var desc: String = ""
+        for edge in self.edges {
+            let from = edge.from
+            let to = edge.to
+            desc.append("\(from.id)(\"\(from.data!.phrase!)\") \(to.id)(\"\(to.data!.phrase!)\") \(edge.data!)\n")
+        }
+        return desc
     }
 }
