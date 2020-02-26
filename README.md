@@ -61,3 +61,6 @@ To calculate the probability of each sentence, we first construct a line graph o
 After the transformation, we obtain a graph above, where each vertex in the graph is a lexicon. Then, we should add weight to each directed edge in our SLM graph such that a directed edge from vertex $i$ to vertex $j$ has a weight ```P(i|j)``` from our statistic learning model.
 
 We can now calculate the probability of a sentence by finding its accumulated weight
+
+## Acknowledge
+Thanks to Mr. Guo Jiabao for open sourcing his [implementation](https://www.byvoid.com/zht/blog/slm_based_pinyin_ime) of SLM-based Pinyin inference algorithm. My algorithm would not be possible without this. We also thanks [岁寒](https://zhuanlan.zhihu.com/p/28332648) for sharing optimazation techniques on this topic.
