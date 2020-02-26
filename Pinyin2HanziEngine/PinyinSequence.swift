@@ -11,10 +11,14 @@ import Foundation
 /*
  store the valid pinyin sequences from vertex i to vertex j in syllable graph
  */
-class PinyinSequence {
+class PinyinSequence: CustomStringConvertible {
     var pinyinSequence: [String]
     var from: Int
     var to: Int
+    
+    var description: String {
+        return pinyinSequence.description
+    }
     
     init(sequences: [String], from: Int, to: Int) {
         self.pinyinSequence = sequences
