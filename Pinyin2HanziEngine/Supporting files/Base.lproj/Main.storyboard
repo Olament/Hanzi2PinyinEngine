@@ -16,7 +16,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" textAlignment="natural" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XMC-jp-9Jt" userLabel="OutputField">
-                                <rect key="frame" x="87" y="378" width="240" height="250"/>
+                                <rect key="frame" x="10" y="378" width="394" height="250"/>
                                 <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="250" id="yII-AF-kUs"/>
@@ -44,11 +44,11 @@
                             <constraint firstItem="XMC-jp-9Jt" firstAttribute="top" secondItem="Uh8-Zp-jIg" secondAttribute="bottom" constant="10" id="9p4-Wl-zbs"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="Uh8-Zp-jIg" secondAttribute="trailing" constant="100" id="ApB-OK-beK"/>
                             <constraint firstItem="Uh8-Zp-jIg" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="100" id="Bp2-5I-L76"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="XMC-jp-9Jt" secondAttribute="trailing" constant="87" id="EG6-dv-8PB"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="XMC-jp-9Jt" secondAttribute="trailing" constant="10" id="EG6-dv-8PB"/>
                             <constraint firstItem="Uh8-Zp-jIg" firstAttribute="top" secondItem="bVU-iT-Xmf" secondAttribute="bottom" constant="10" id="HNl-JT-2Lx"/>
                             <constraint firstItem="bVU-iT-Xmf" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="YTf-fU-Wxd"/>
                             <constraint firstItem="bVU-iT-Xmf" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="250" id="YYg-sd-HXX"/>
-                            <constraint firstItem="XMC-jp-9Jt" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="87" id="gKN-4c-sCb"/>
+                            <constraint firstItem="XMC-jp-9Jt" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="10" id="gKN-4c-sCb"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="bVU-iT-Xmf" secondAttribute="trailing" constant="20" id="wqO-ZQ-k2w"/>
                             <constraint firstItem="XMC-jp-9Jt" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="y8W-TH-CzG"/>
                         </constraints>
