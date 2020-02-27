@@ -208,7 +208,7 @@ class SLMGraph: Graph<SLMGraph.VertexData, Double>, CustomStringConvertible {
             }
             
             if !isDuplicate {
-                print("\(sentences[i].sentence) \(sentences[i].probability) \(sentences[i].pinyin)")
+                //print("\(sentences[i].sentence) \(sentences[i].probability) \(sentences[i].pinyin)")
                 finalSentences.append(sentences[i])
                 
                 if finalSentences.count > solutionSizeLimit {

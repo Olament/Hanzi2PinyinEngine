@@ -33,8 +33,9 @@ class ViewController: UIViewController {
             
             output.text = ""
             for solution in solutions {
-                output.text.append("\(solution.sentence) \(solution.probability)\n")
+                output.text.append("\(solution.sentence) \(solution.probability) \(solution.pinyin.description)\n")
             }
+            print(output.text!)
         }
     }
     
