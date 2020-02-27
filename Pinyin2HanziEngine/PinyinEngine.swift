@@ -89,6 +89,7 @@ class PinyinEngine {
             let elapsed = Double(time[i].uptimeNanoseconds - time[i-1].uptimeNanoseconds) / 1_000_000
             print("\(description[i-1]): \(elapsed)")
         }
+        print("Cache size: \(self.languageModel.cache.count)")
         
         return result
     }
