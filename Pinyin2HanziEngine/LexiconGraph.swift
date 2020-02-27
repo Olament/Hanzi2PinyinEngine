@@ -26,7 +26,7 @@ class LexiconGraph: Graph<Int, EdgeData>, CustomStringConvertible {
         
         for sequence in pinyinSequences {
             if let phrases = tree.searchPhrase(pinyins: sequence.pinyinSequence) {
-                for i in 0..<min(phrases.count, 10) { // limit amount of phrase get
+                for i in 0..<min(phrases.count, 5) { // limit amount of phrase get
                     let edge = addEdge(from: self.vertices[sequence.from], to: self.vertices[sequence.to])
                     edge.data = EdgeData(phrase: phrases[i], id: self.edgeCount, pinyinSequence: sequence) // add id in sequence
                 }
