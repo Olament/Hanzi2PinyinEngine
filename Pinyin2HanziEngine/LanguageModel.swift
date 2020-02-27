@@ -17,7 +17,8 @@ class LanguageModel {
     var lexicon: LexiconTree
     var db: DatabaseQueue // connection to unigram/bigram databse
     
-    var cache: [UInt64: Double] = [:] // TODO: add LRU cache
+    //var cache: [UInt64: Double] = [:] // TODO: add LRU cache
+    var cache: LRUCache = LRUCache<UInt64, Double>(cacheLimit: 2000)
 
     init(lexicon: LexiconTree, databaseConnection connection: DatabaseQueue) {
         self.lexicon = lexicon
@@ -81,7 +82,7 @@ class LanguageModel {
         case 2:
             cache[unknownPhraseHash] = result
         default:
-            cache[phraseUnknownHash] = result
+            cache[phraseHash] = result
         }
         
         return result
