@@ -50,7 +50,14 @@ class PinyinEngine {
         
         if let path = Bundle.main.path(forResource: "db", ofType: "sqlite3") {
             do {
-                let db = try DatabaseQueue(path: path)
+                var config = Configuration()
+                config.prepareDatabase = { db in
+                    try? db.execute(sql: "PRAGMA synchronous=OFF")
+                    try? db.execute(sql: "PRAGMA journal_mode=OFF")
+                    try? db.execute(sql: "PRAGMA locking_mode=EXCLUSIVE")
+                    try? db.execute(sql: "PRAGMA query_only=1")
+                }
+                let db = try DatabaseQueue(path: path, configuration: config)
                 self.database = db
             } catch {
                 print("failed to load database")
