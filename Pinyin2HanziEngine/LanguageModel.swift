@@ -19,7 +19,6 @@ class Weight {
 }
 
 enum QueryStatus {
-    case done
     case needPhrase
     case needPhraseUnknown
     case needUnknownPhrase
@@ -35,6 +34,7 @@ class BiWeight: Weight {
     var phrase2Weight: Weight?
     
     var status: QueryStatus = .needPhrase
+    var isDone: Bool = false
     var delta: Double?
     
     var hashToQuery: UInt64 {
@@ -47,8 +47,6 @@ class BiWeight: Weight {
             hash = phraseUnknown
         case .needUnknownPhrase:
             hash = unknownPhrase
-        default:
-            print("ERROR NOT SUPPOSE TO REACH DONE PHASE IN SWITCH CALUSE")
         }
         
         return hash
@@ -131,7 +129,7 @@ class LanguageModel {
         for _ in 0..<3 {
             var hashes: Set<UInt64> = Set() // a set to store hashs to query
             for weight in biweightQuery.values {
-                if weight.status == .done { // skip this one if we query it already
+                if weight.isDone { // skip this one if we query it already
                     continue
                 }
                             
@@ -139,10 +137,10 @@ class LanguageModel {
                     if weight.status == .needPhrase {
                         weight.probability = prob
                     } else {
-                        weight.delta = prob + 2.71828
+                        weight.delta = prob + E
                         weight.setupWeight(weightDic: &weightQuery)
                     }
-                    weight.status = .done
+                    weight.isDone = true
                 } else {
                     hashes.insert(weight.hashToQuery)
                 }
@@ -162,7 +160,7 @@ class LanguageModel {
             
             /* put queried result back to weight */
             for weight in biweightQuery.values {
-                if weight.status == .done {
+                if weight.isDone {
                     continue
                 }
                 
@@ -171,13 +169,11 @@ class LanguageModel {
                     case .needPhrase:
                         weight.probability = prob
                     case .needPhraseUnknown, .needUnknownPhrase:
-                        weight.delta = prob + 2.71828
+                        weight.delta = prob + E
                         weight.setupWeight(weightDic: &weightQuery)
-                    case .done:
-                        print("do nothing")
                     }
                     cache[weight.hashToQuery] = prob
-                    weight.status = .done
+                    weight.isDone = true
                 } else {
                     /* move to next status if missed */
                     switch weight.status {
@@ -186,10 +182,8 @@ class LanguageModel {
                     case .needPhraseUnknown:
                         weight.status = .needUnknownPhrase
                     case .needUnknownPhrase:
-                        weight.delta = 2.71828
+                        weight.delta = E
                         weight.setupWeight(weightDic: &weightQuery)
-                    case .done:
-                        print("do nothing")
                     }
                 }
             }
