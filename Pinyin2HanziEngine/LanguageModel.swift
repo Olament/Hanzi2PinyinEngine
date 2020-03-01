@@ -19,6 +19,8 @@ class LanguageModel {
     
     //var cache: [UInt64: Double] = [:] // TODO: add LRU cache
     var cache: LRUCache = LRUCache<UInt64, Double>(cacheLimit: 2000)
+    var totalQuery = 0
+    var cacheHit = 0
 
     init(lexicon: LexiconTree, databaseConnection connection: DatabaseQueue) {
         self.lexicon = lexicon
@@ -29,8 +31,10 @@ class LanguageModel {
     func getUnigram(phrase: String) -> Double {
         var probability: Double = self.infiniteEstimation
         let hash = phrase.stableHash
+        totalQuery += 1
         
         if let prob = cache[hash] {
+            cacheHit += 1
             return prob
         } else {
             db.read { db in
@@ -49,16 +53,20 @@ class LanguageModel {
         var delta: Double = 0.0
         var probability: Double = 0.0
         var layerHit = 0 // mark which query layer it hits
+        totalQuery += 1
         
         let phraseHash = (phrase1 + " " + phrase2).stableHash
         let phraseUnknownHash = (phrase1 + " " + self.unknown).stableHash
         let unknownPhraseHash = (self.unknown + " " + phrase2).stableHash
                         
         if let prob = cache[phraseHash] {
+            cacheHit += 1
             return prob
         } else if let prob = cache[phraseUnknownHash] {
+            cacheHit += 1
             return prob
         } else if let prob = cache[unknownPhraseHash] {
+            cacheHit += 1
             return prob
         } else {
             db.read{ db in
