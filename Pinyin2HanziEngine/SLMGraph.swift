@@ -9,7 +9,7 @@
 import Foundation
 
 
-class SLMGraph: Graph<SLMGraph.VertexData, Double>, CustomStringConvertible {
+class SLMGraph: Graph<SLMGraph.VertexData, Weight>, CustomStringConvertible {
     class VertexData {
         var phrase: String?
         var pinyinSequence: PinyinSequence?
@@ -23,9 +23,9 @@ class SLMGraph: Graph<SLMGraph.VertexData, Double>, CustomStringConvertible {
 
     class Distance {
         var distance = -Double.infinity
-        var edge: Graph<VertexData, Double>.Edge?
+        var edge: Graph<VertexData, Weight>.Edge?
         
-        init(distance: Double, edge: Graph<VertexData, Double>.Edge) {
+        init(distance: Double, edge: Graph<VertexData, Weight>.Edge) {
             self.distance = distance
             self.edge = edge
         }
@@ -97,7 +97,9 @@ class SLMGraph: Graph<SLMGraph.VertexData, Double>, CustomStringConvertible {
         time.append(DispatchTime.now())
         
         for edge in lexiconGraph.vertices[lexiconGraph.vertices.count - 1].from {
-            _ = addEdge(from: edge.data!.id, to: self.vertexCount - 1, weight: 1.0)
+            let weight = Weight(hash: 0)
+            weight.probability = 1.0
+            _ = addEdge(from: edge.data!.id, to: self.vertexCount - 1, weight: weight)
         }
         time.append(DispatchTime.now())
         
@@ -117,6 +119,7 @@ class SLMGraph: Graph<SLMGraph.VertexData, Double>, CustomStringConvertible {
             }
         }
         
+        model.queryProbability()
         time.append(DispatchTime.now())
         
         let description = ["Init base graph", "Set solution limit", "add vertex to SLM", "add vertex to start", "add vertex to end", "add edge"]
@@ -126,9 +129,9 @@ class SLMGraph: Graph<SLMGraph.VertexData, Double>, CustomStringConvertible {
         }
     }
     
-    func addEdge(from: Int, to: Int, weight: Double) -> Graph<SLMGraph.VertexData, Double>.Edge {
+    func addEdge(from: Int, to: Int, weight: Weight) -> Graph<SLMGraph.VertexData, Weight>.Edge {
         let edge = super.addEdge(from: self.vertices[from], to: self.vertices[to])
-        edge.data = log(weight)
+        edge.data = weight
         return edge
     }
     
@@ -137,7 +140,7 @@ class SLMGraph: Graph<SLMGraph.VertexData, Double>, CustomStringConvertible {
         
         for edge in current.from {
             let prev = edge.from
-            let weight = edge.data!
+            let weight = log(edge.data!.probability!)
             if !prev.data!.isCalculated {
                 calculatedPath(vertex: prev)
             }
@@ -160,7 +163,7 @@ class SLMGraph: Graph<SLMGraph.VertexData, Double>, CustomStringConvertible {
             if let prevEdge = distance.edge {
                 // since we log transform each weight
                 // w1*w2*w3 -> log(w1*w2*w3) = log(w1) + log(w2) + log(w3)
-                makeSentence(currentVertex: prevEdge.from, probability: probability + prevEdge.data!)
+                makeSentence(currentVertex: prevEdge.from, probability: probability + prevEdge.data!.probability!)
             } else {
                 var sentence: String = ""
                 var pinyins: [String] = []
