@@ -1,98 +1,243 @@
 //
-//  LanguageModel.swift
+//  Weight.swift
 //  Pinyin2HanziEngine
 //
-//  Created by Zixuan on 2/16/20.
+//  Created by Zixuan on 2/29/20.
 //  Copyright © 2020 Zixuan. All rights reserved.
 //
 
 import Foundation
 import GRDB
 
-class LanguageModel {
-    let unknown = "<unknown>"
-    let infiniteEstimation: Double = 1e-100
-    let E: Double = 2.71828
+class Weight {
+    var phraseHash: UInt64 = 0
+    var probability: Double?
+    
+    init(hash: UInt64) { // for phrase not in cache
+        self.phraseHash = hash
+    }
+}
 
+enum QueryStatus {
+    case done
+    case needPhrase
+    case needPhraseUnknown
+    case needUnknownPhrase
+}
+
+class BiWeight: Weight {
+    var phraseUnknown: UInt64
+    var unknownPhrase: UInt64
+    var phrase1: UInt64
+    var phrase2: UInt64
+    
+    var phrase1Weight: Weight?
+    var phrase2Weight: Weight?
+    
+    var status: QueryStatus = .needPhrase
+    var delta: Double?
+    
+    var hashToQuery: UInt64 {
+        var hash: UInt64 = 0
+        
+        switch self.status {
+        case .needPhrase:
+            hash = phraseHash
+        case .needPhraseUnknown:
+            hash = phraseUnknown
+        case .needUnknownPhrase:
+            hash = unknownPhrase
+        default:
+            print("ERROR NOT SUPPOSE TO REACH DONE PHASE IN SWITCH CALUSE")
+        }
+        
+        return hash
+    }
+    
+    init(phrase1: String, phrase2: String) {
+        self.phrase1 = phrase1.stableHash
+        self.phrase2 = phrase2.stableHash
+        self.phraseUnknown = (phrase1 + " <unknown>").stableHash
+        self.unknownPhrase = ("<unknown> " + phrase2).stableHash
+        
+        super.init(hash: (phrase1 + " " + phrase2).stableHash)
+    }
+    
+    func setupWeight(weightDic: inout [UInt64: Weight]) {
+        /* add weight1 to Biweight */
+        if let weight1 = weightDic[self.phrase1] {
+            self.phrase1Weight = weight1
+        } else {
+            let newWeight = Weight(hash: self.phrase1)
+            weightDic[self.phrase1] = newWeight
+            self.phrase1Weight = newWeight
+        }
+        /* add weight2 to Biweight */
+        if let weight2 = weightDic[self.phrase2] {
+            self.phrase2Weight = weight2
+        } else {
+            let newWeight = Weight(hash: self.phrase2)
+            weightDic[self.phrase2] = newWeight
+            self.phrase2Weight = newWeight
+        }
+    }
+}
+
+class LanguageModel {
     var lexicon: LexiconTree
     var db: DatabaseQueue // connection to unigram/bigram databse
     
-    //var cache: [UInt64: Double] = [:] // TODO: add LRU cache
+    let unknown: String = "<unknown>"
+    let infiniteEstimation: Double = 1e-100
+    let E: Double = 2.71828
+    
     var cache: LRUCache = LRUCache<UInt64, Double>(cacheLimit: 2000)
-    var totalQuery = 0
-    var cacheHit = 0
-
+    
+    var weightQuery: [UInt64: Weight] = [:]
+    var biweightQuery: [UInt64: BiWeight] = [:]
+    
     init(lexicon: LexiconTree, databaseConnection connection: DatabaseQueue) {
         self.lexicon = lexicon
         self.db = connection
     }
-
-    /* get P(w_i) */
-    func getUnigram(phrase: String) -> Double {
-        var probability: Double = self.infiniteEstimation
-        let hash = phrase.stableHash
-        totalQuery += 1
+    
+    func getUnigram(phrase: String) -> Weight {
+        let phraseHash = phrase.stableHash
         
-        if let prob = cache[hash] {
-            cacheHit += 1
-            return prob
-        } else {
-            db.read { db in
-                if let prob = try? Double.fetchOne(db, sql: "SELECT probability from unigram where hash = ?", arguments: [hash]) {
-                    probability = prob
-                }
-            }
+        if let weight = weightQuery[phraseHash] {
+            return weight
         }
-
-        cache[hash] = probability
-        return probability
+        
+        /* add weight to weight Query if it does not exist in weightQury */
+        let weight = Weight(hash: phraseHash)
+        weightQuery[phraseHash] = weight
+        
+        return weight
     }
-
-    /* get P(w_i|w_j) */
-    func getBigram(phrase1: String, phrase2: String) -> Double {
-        var delta: Double = 0.0
-        var probability: Double = 0.0
-        var layerHit = 0 // mark which query layer it hits
-        totalQuery += 1
-        
+    
+    func getBigram(phrase1: String, phrase2: String) -> BiWeight {
         let phraseHash = (phrase1 + " " + phrase2).stableHash
-        let phraseUnknownHash = (phrase1 + " " + self.unknown).stableHash
-        let unknownPhraseHash = (self.unknown + " " + phrase2).stableHash
-                        
-        if let prob = cache[phraseHash] {
-            cacheHit += 1
-            return prob
-        } else if let prob = cache[phraseUnknownHash] {
-            cacheHit += 1
-            return prob
-        } else if let prob = cache[unknownPhraseHash] {
-            cacheHit += 1
-            return prob
-        } else {
-            db.read{ db in
-                if let prob = try? Double.fetchOne(db, sql: "SELECT probability from bigram where hash = ?", arguments: [phraseHash]) {
-                    probability = prob
-                } else if let prob = try? Double.fetchOne(db, sql: "SELECT probability from bigram where hash = ?", arguments: [phraseUnknownHash]) {
-                    delta = prob
-                    layerHit = 1
-                } else if let prob = try? Double.fetchOne(db, sql: "SELECT probability from bigram where hash = ?", arguments: [unknownPhraseHash]) {
-                    delta = prob
-                    layerHit = 2
+        if let weight = biweightQuery[phraseHash] {
+            return weight
+        }
+        
+        let weight = BiWeight(phrase1: phrase1, phrase2: phrase2)
+        biweightQuery[phraseHash] = weight
+        
+        return weight
+    }
+    
+    func queryProbability() {
+        for _ in 0..<3 {
+            var hashes: Set<UInt64> = Set() // a set to store hashs to query
+            for weight in biweightQuery.values {
+                if weight.status == .done { // skip this one if we query it already
+                    continue
+                }
+                            
+                if let prob = cache[weight.hashToQuery] { // check cache
+                    if weight.status == .needPhrase {
+                        weight.probability = prob
+                    } else {
+                        weight.delta = prob + 2.71828
+                        weight.setupWeight(weightDic: &weightQuery)
+                    }
+                    weight.status = .done
+                } else {
+                    hashes.insert(weight.hashToQuery)
+                }
+            }
+            
+            /* compose query string */
+            let query = Array(hashes).map{ String($0) }.joined(separator: ", ")
+            var queryResult: [UInt64: Double] = [:]
+            
+            db.read { db in
+                if let rows = try? Row.fetchAll(db, sql: "select * from bigram where hash in (\(query))") {
+                    for row in rows {
+                        queryResult[row["hash"]] = row["probability"]
+                    }
+                }
+            }
+            
+            /* put queried result back to weight */
+            for weight in biweightQuery.values {
+                if weight.status == .done {
+                    continue
+                }
+                
+                if let prob = queryResult[weight.hashToQuery] {
+                    switch weight.status {
+                    case .needPhrase:
+                        weight.probability = prob
+                    case .needPhraseUnknown, .needUnknownPhrase:
+                        weight.delta = prob + 2.71828
+                        weight.setupWeight(weightDic: &weightQuery)
+                    case .done:
+                        print("do nothing")
+                    }
+                    cache[weight.hashToQuery] = prob
+                    weight.status = .done
+                } else {
+                    /* move to next status if missed */
+                    switch weight.status {
+                    case .needPhrase:
+                        weight.status = .needPhraseUnknown
+                    case .needPhraseUnknown:
+                        weight.status = .needUnknownPhrase
+                    case .needUnknownPhrase:
+                        weight.delta = 2.71828
+                        weight.setupWeight(weightDic: &weightQuery)
+                    case .done:
+                        print("do nothing")
+                    }
                 }
             }
         }
         
-        let result = probability != 0 ? probability : getUnigram(phrase: phrase1) * getUnigram(phrase: phrase2) * (self.E + delta)
-        
-        switch layerHit {
-        case 1:
-            cache[phraseUnknownHash] = result
-        case 2:
-            cache[unknownPhraseHash] = result
-        default:
-            cache[phraseHash] = result
+        /* query all the uni-weight */
+        var unWeightHashes: Set<UInt64> = Set()
+        for weight in weightQuery.values {
+            if let prob = cache[weight.phraseHash] {
+                weight.probability = prob
+            } else {
+                unWeightHashes.insert(weight.phraseHash)
+            }
         }
         
-        return result
+        let query = Array(unWeightHashes).map{ String($0) }.joined(separator: ", ")
+        var queryResult: [UInt64: Double] = [:]
+        
+        db.read { db in
+            if let rows = try? Row.fetchAll(db, sql: "select * from unigram where hash in (\(query))") {
+                for row in rows {
+                    queryResult[row["hash"]] = row["probability"]
+                }
+            }
+        }
+        
+        /* update uni-weight w/ query result */
+        for weight in weightQuery.values {
+            if weight.probability == nil {
+                if let prob = queryResult[weight.phraseHash] {
+                    weight.probability = prob
+                    cache[weight.phraseHash] = prob
+                } else {
+                    weight.probability = infiniteEstimation
+                }
+            }
+        }
+        
+        /* update Biweight */
+        for weight in biweightQuery.values {
+            if weight.probability == nil {
+                let probability = weight.phrase1Weight!.probability! * weight.phrase2Weight!.probability! * weight.delta!
+                weight.probability = probability
+                cache[weight.hashToQuery] = probability
+            }
+        }
+        
+        weightQuery.removeAll()
+        biweightQuery.removeAll()
     }
 }

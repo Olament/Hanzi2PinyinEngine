@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		5418950E23FA3450008A3B47 /* LanguageModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5418950D23FA3450008A3B47 /* LanguageModel.swift */; };
 		5418951023FA3BB6008A3B47 /* SLMGraph.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5418950F23FA3BB6008A3B47 /* SLMGraph.swift */; };
 		5418951223FAF77C008A3B47 /* Solution.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5418951123FAF77C008A3B47 /* Solution.swift */; };
 		54B045BC23F8E982003EB423 /* LexiconTree.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54B045BB23F8E982003EB423 /* LexiconTree.swift */; };
@@ -26,8 +25,9 @@
 		54C3CBDB2405AD0500E03519 /* GRDB.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 5449875824042F360050D391 /* GRDB.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		54C3CBDF2406032A00E03519 /* db.sqlite3 in Resources */ = {isa = PBXBuildFile; fileRef = 54C3CBDE2406032A00E03519 /* db.sqlite3 */; };
 		54C3CBE52407640000E03519 /* LRUCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54C3CBE42407640000E03519 /* LRUCache.swift */; };
-		54C3CBEA24076C5400E03519 /* syllable.txt in Resources */ = {isa = PBXBuildFile; fileRef = 54C3CBE824076C5400E03519 /* syllable.txt */; };
-		54C3CBEB24076C5400E03519 /* lexicon.txt in Resources */ = {isa = PBXBuildFile; fileRef = 54C3CBE924076C5400E03519 /* lexicon.txt */; };
+		54F4C324240AEF9E004A586F /* LanguageModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54F4C323240AEF9E004A586F /* LanguageModel.swift */; };
+		54F4C334240B962D004A586F /* lexicon.txt in Resources */ = {isa = PBXBuildFile; fileRef = 54F4C332240B962D004A586F /* lexicon.txt */; };
+		54F4C335240B962D004A586F /* syllable.txt in Resources */ = {isa = PBXBuildFile; fileRef = 54F4C333240B962D004A586F /* syllable.txt */; };
 		54F762EB23FCE5550074E4AC /* PinyinEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54F762EA23FCE5550074E4AC /* PinyinEngine.swift */; };
 /* End PBXBuildFile section */
 
@@ -112,7 +112,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		5418950D23FA3450008A3B47 /* LanguageModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LanguageModel.swift; sourceTree = "<group>"; };
 		5418950F23FA3BB6008A3B47 /* SLMGraph.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SLMGraph.swift; sourceTree = "<group>"; };
 		5418951123FAF77C008A3B47 /* Solution.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Solution.swift; sourceTree = "<group>"; };
 		5449874624042F360050D391 /* GRDB.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = GRDB.xcodeproj; path = framework/GRDB.swift/GRDB.xcodeproj; sourceTree = "<group>"; };
@@ -132,8 +131,9 @@
 		54C3CBCE2405196800E03519 /* script.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = script.swift; sourceTree = "<group>"; };
 		54C3CBDE2406032A00E03519 /* db.sqlite3 */ = {isa = PBXFileReference; lastKnownFileType = file; name = db.sqlite3; path = Pinyin2HanziEngine/Resources/db.sqlite3; sourceTree = SOURCE_ROOT; };
 		54C3CBE42407640000E03519 /* LRUCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LRUCache.swift; sourceTree = "<group>"; };
-		54C3CBE824076C5400E03519 /* syllable.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = syllable.txt; sourceTree = "<group>"; };
-		54C3CBE924076C5400E03519 /* lexicon.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = lexicon.txt; sourceTree = "<group>"; };
+		54F4C323240AEF9E004A586F /* LanguageModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LanguageModel.swift; sourceTree = "<group>"; };
+		54F4C332240B962D004A586F /* lexicon.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = lexicon.txt; path = Pinyin2HanziEngine/Resources/lexicon.txt; sourceTree = SOURCE_ROOT; };
+		54F4C333240B962D004A586F /* syllable.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = syllable.txt; path = Pinyin2HanziEngine/Resources/syllable.txt; sourceTree = SOURCE_ROOT; };
 		54F762EA23FCE5550074E4AC /* PinyinEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinyinEngine.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -195,7 +195,7 @@
 				54B045BB23F8E982003EB423 /* LexiconTree.swift */,
 				54B045BD23F8FA26003EB423 /* LexiconGraph.swift */,
 				54B5ADBE23EF611A00E45988 /* PinyinSequence.swift */,
-				5418950D23FA3450008A3B47 /* LanguageModel.swift */,
+				54F4C323240AEF9E004A586F /* LanguageModel.swift */,
 				5418950F23FA3BB6008A3B47 /* SLMGraph.swift */,
 				54F762EA23FCE5550074E4AC /* PinyinEngine.swift */,
 				54B5ADB523EF606300E45988 /* ViewController.swift */,
@@ -219,8 +219,8 @@
 		54B5ADB723EF607F00E45988 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				54C3CBE924076C5400E03519 /* lexicon.txt */,
-				54C3CBE824076C5400E03519 /* syllable.txt */,
+				54F4C332240B962D004A586F /* lexicon.txt */,
+				54F4C333240B962D004A586F /* syllable.txt */,
 				54C3CBDE2406032A00E03519 /* db.sqlite3 */,
 			);
 			name = Resources;
@@ -368,10 +368,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				54B5ADA923EF5FAB00E45988 /* LaunchScreen.storyboard in Resources */,
-				54C3CBEB24076C5400E03519 /* lexicon.txt in Resources */,
 				54B5ADA623EF5FAB00E45988 /* Assets.xcassets in Resources */,
-				54C3CBEA24076C5400E03519 /* syllable.txt in Resources */,
+				54F4C334240B962D004A586F /* lexicon.txt in Resources */,
 				54C3CBDF2406032A00E03519 /* db.sqlite3 in Resources */,
+				54F4C335240B962D004A586F /* syllable.txt in Resources */,
 				54B5ADA423EF5FA700E45988 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -385,9 +385,9 @@
 			files = (
 				54B5ADC123EF611A00E45988 /* Graph.swift in Sources */,
 				54C3CBCF2405196800E03519 /* script.swift in Sources */,
-				5418950E23FA3450008A3B47 /* LanguageModel.swift in Sources */,
 				54F762EB23FCE5550074E4AC /* PinyinEngine.swift in Sources */,
 				54C3CBE52407640000E03519 /* LRUCache.swift in Sources */,
+				54F4C324240AEF9E004A586F /* LanguageModel.swift in Sources */,
 				54B045BE23F8FA26003EB423 /* LexiconGraph.swift in Sources */,
 				5418951023FA3BB6008A3B47 /* SLMGraph.swift in Sources */,
 				5418951223FAF77C008A3B47 /* Solution.swift in Sources */,
