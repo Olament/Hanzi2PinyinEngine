@@ -32,24 +32,6 @@ class PinyinEngine {
             }
         }
         
-        // init Lexicon Tree
-        print("load lexicon tree")
-        //lexiconTree = LexiconTree(pinyinSyllable: syllableSet)
-//        if let path = Bundle.main.path(forResource: "lexicon", ofType: "txt") {
-//            do {
-//                let data = try String(contentsOfFile: path, encoding: .utf8)
-//                let lines = data.split(separator:"\n")
-//                for word in lines {
-//                    let parts = word.split(separator: "\t")
-//                    let phrase = String(parts[1])
-//                    let pinyins = parts[0].split(separator: "'").map(String.init)
-//                    lexiconTree.insertPhrase(phrase: phrase, pinyins: pinyins)
-//                }
-//            } catch {
-//                print(error)
-//            }
-//        }
-        
         if let path = Bundle.main.path(forResource: "lexicon", ofType: "sqlite3") {
             do {
                 let db = try DatabaseQueue(path: path)
