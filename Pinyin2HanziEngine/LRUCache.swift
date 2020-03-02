@@ -120,7 +120,6 @@ class LRUCache<Key: Hashable, Value> {
     }
     
     var count: Int {
-        print("Internal: hashtable has \(self.hashTable.count) and list has \(self.list.count)")
         return self.hashTable.count
     }
     

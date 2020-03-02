@@ -163,7 +163,7 @@ class SLMGraph: Graph<SLMGraph.VertexData, Weight>, CustomStringConvertible {
             if let prevEdge = distance.edge {
                 // since we log transform each weight
                 // w1*w2*w3 -> log(w1*w2*w3) = log(w1) + log(w2) + log(w3)
-                makeSentence(currentVertex: prevEdge.from, probability: probability + prevEdge.data!.probability!)
+                makeSentence(currentVertex: prevEdge.from, probability: probability + log(prevEdge.data!.probability!))
             } else {
                 var sentence: String = ""
                 var pinyins: [String] = []

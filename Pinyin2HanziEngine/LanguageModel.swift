@@ -1,5 +1,5 @@
 //
-//  Weight.swift
+//  LanguageModel.swift
 //  Pinyin2HanziEngine
 //
 //  Created by Zixuan on 2/29/20.
