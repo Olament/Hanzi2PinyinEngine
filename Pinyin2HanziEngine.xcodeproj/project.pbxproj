@@ -26,7 +26,6 @@
 		54C3CBDF2406032A00E03519 /* db.sqlite3 in Resources */ = {isa = PBXBuildFile; fileRef = 54C3CBDE2406032A00E03519 /* db.sqlite3 */; };
 		54C3CBE52407640000E03519 /* LRUCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54C3CBE42407640000E03519 /* LRUCache.swift */; };
 		54F4C324240AEF9E004A586F /* LanguageModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54F4C323240AEF9E004A586F /* LanguageModel.swift */; };
-		54F4C334240B962D004A586F /* lexicon.txt in Resources */ = {isa = PBXBuildFile; fileRef = 54F4C332240B962D004A586F /* lexicon.txt */; };
 		54F4C335240B962D004A586F /* syllable.txt in Resources */ = {isa = PBXBuildFile; fileRef = 54F4C333240B962D004A586F /* syllable.txt */; };
 		54F4C39A240DB895004A586F /* lexicon.sqlite3 in Resources */ = {isa = PBXBuildFile; fileRef = 54F4C399240DB88F004A586F /* lexicon.sqlite3 */; };
 		54F762EB23FCE5550074E4AC /* PinyinEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54F762EA23FCE5550074E4AC /* PinyinEngine.swift */; };
@@ -133,7 +132,6 @@
 		54C3CBDE2406032A00E03519 /* db.sqlite3 */ = {isa = PBXFileReference; lastKnownFileType = file; name = db.sqlite3; path = Pinyin2HanziEngine/Resources/db.sqlite3; sourceTree = SOURCE_ROOT; };
 		54C3CBE42407640000E03519 /* LRUCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LRUCache.swift; sourceTree = "<group>"; };
 		54F4C323240AEF9E004A586F /* LanguageModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LanguageModel.swift; sourceTree = "<group>"; };
-		54F4C332240B962D004A586F /* lexicon.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = lexicon.txt; path = Pinyin2HanziEngine/Resources/lexicon.txt; sourceTree = SOURCE_ROOT; };
 		54F4C333240B962D004A586F /* syllable.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = syllable.txt; path = Pinyin2HanziEngine/Resources/syllable.txt; sourceTree = SOURCE_ROOT; };
 		54F4C399240DB88F004A586F /* lexicon.sqlite3 */ = {isa = PBXFileReference; lastKnownFileType = file; path = lexicon.sqlite3; sourceTree = "<group>"; };
 		54F762EA23FCE5550074E4AC /* PinyinEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinyinEngine.swift; sourceTree = "<group>"; };
@@ -222,11 +220,9 @@
 			isa = PBXGroup;
 			children = (
 				54F4C399240DB88F004A586F /* lexicon.sqlite3 */,
-				54F4C332240B962D004A586F /* lexicon.txt */,
 				54F4C333240B962D004A586F /* syllable.txt */,
 				54C3CBDE2406032A00E03519 /* db.sqlite3 */,
 			);
-			name = Resources;
 			path = Resources;
 			sourceTree = "<group>";
 		};
@@ -373,7 +369,6 @@
 				54F4C39A240DB895004A586F /* lexicon.sqlite3 in Resources */,
 				54B5ADA923EF5FAB00E45988 /* LaunchScreen.storyboard in Resources */,
 				54B5ADA623EF5FAB00E45988 /* Assets.xcassets in Resources */,
-				54F4C334240B962D004A586F /* lexicon.txt in Resources */,
 				54C3CBDF2406032A00E03519 /* db.sqlite3 in Resources */,
 				54F4C335240B962D004A586F /* syllable.txt in Resources */,
 				54B5ADA423EF5FA700E45988 /* Main.storyboard in Resources */,
