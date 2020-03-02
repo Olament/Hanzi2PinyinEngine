@@ -227,7 +227,7 @@
 				54C3CBDE2406032A00E03519 /* db.sqlite3 */,
 			);
 			name = Resources;
-			path = ../../Pinyin2HanziEngine.bak/Resources;
+			path = Resources;
 			sourceTree = "<group>";
 		};
 		54C3CBD02405198B00E03519 /* Script */ = {
