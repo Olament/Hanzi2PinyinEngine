@@ -13,7 +13,9 @@ class PinyinEngine {
     var syllableSet: Set<String> = Set()
     var lexiconTree: LexiconTree
     var languageModel: LanguageModel
-    var database: DatabaseQueue!
+    
+    var database: DatabaseQueue! // grams database
+    var lexicon: DatabaseQueue! // phrase database
 
     init() {
         // init syllable
@@ -32,21 +34,32 @@ class PinyinEngine {
         
         // init Lexicon Tree
         print("load lexicon tree")
-        lexiconTree = LexiconTree(pinyinSyllable: syllableSet)
-        if let path = Bundle.main.path(forResource: "lexicon", ofType: "txt") {
+        //lexiconTree = LexiconTree(pinyinSyllable: syllableSet)
+//        if let path = Bundle.main.path(forResource: "lexicon", ofType: "txt") {
+//            do {
+//                let data = try String(contentsOfFile: path, encoding: .utf8)
+//                let lines = data.split(separator:"\n")
+//                for word in lines {
+//                    let parts = word.split(separator: "\t")
+//                    let phrase = String(parts[1])
+//                    let pinyins = parts[0].split(separator: "'").map(String.init)
+//                    lexiconTree.insertPhrase(phrase: phrase, pinyins: pinyins)
+//                }
+//            } catch {
+//                print(error)
+//            }
+//        }
+        
+        if let path = Bundle.main.path(forResource: "lexicon", ofType: "sqlite3") {
             do {
-                let data = try String(contentsOfFile: path, encoding: .utf8)
-                let lines = data.split(separator:"\n")
-                for word in lines {
-                    let parts = word.split(separator: "\t")
-                    let phrase = String(parts[1])
-                    let pinyins = parts[0].split(separator: "'").map(String.init)
-                    lexiconTree.insertPhrase(phrase: phrase, pinyins: pinyins)
-                }
+                let db = try DatabaseQueue(path: path)
+                self.lexicon = db
             } catch {
-                print(error)
+                print("failed to load lexicon database")
             }
         }
+        
+        self.lexiconTree = LexiconTree(database: self.lexicon)
         
         if let path = Bundle.main.path(forResource: "db", ofType: "sqlite3") {
             do {
@@ -56,7 +69,9 @@ class PinyinEngine {
                     try? db.execute(sql: "PRAGMA journal_mode=OFF")
                     try? db.execute(sql: "PRAGMA locking_mode=EXCLUSIVE")
                     try? db.execute(sql: "PRAGMA query_only=1")
+                    try? db.execute(sql: "PRAGMA optimize")
                 }
+                config.readonly = true
                 let db = try DatabaseQueue(path: path, configuration: config)
                 self.database = db
             } catch {
@@ -82,7 +97,6 @@ class PinyinEngine {
                                         tree: lexiconTree)
         time.append(DispatchTime.now())
         
-                
         print("initialize SLMGraph")
         let slmGraph = SLMGraph(lexiconGraph: lexiconGraph, model: languageModel, limit: 5)
         time.append(DispatchTime.now())
@@ -97,6 +111,9 @@ class PinyinEngine {
             print("\(description[i-1]): \(elapsed)")
         }
         print("Cache size: \(self.languageModel.cache.count)")
+//        let cacheRaio: String = String(format: "%.2f", Double(languageModel.cacheHit)/Double(languageModel.totalQuery)*100)
+//        print("Cache hit ratio: \(languageModel.cacheHit)/\(languageModel.totalQuery) \(cacheRaio)")
+
         
         return result
     }
