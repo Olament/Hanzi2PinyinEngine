@@ -92,7 +92,8 @@ class PinyinEngine {
             let elapsed = Double(time[i].uptimeNanoseconds - time[i-1].uptimeNanoseconds) / 1_000_000
             print("\(description[i-1]): \(elapsed)")
         }
-        print("Cache size: \(self.languageModel.cache.count)")
+        print("Lexicon tree cache size: \(self.lexiconTree.cache.count)")
+        print("Language model cache size: \(self.languageModel.cache.count)")
 //        let cacheRaio: String = String(format: "%.2f", Double(languageModel.cacheHit)/Double(languageModel.totalQuery)*100)
 //        print("Cache hit ratio: \(languageModel.cacheHit)/\(languageModel.totalQuery) \(cacheRaio)")
 

@@ -24,6 +24,8 @@ class LexiconTree {
                  "ua": "5", "uo": "6", "uai": "7", "uan": "8", "uang": "9"]
 
     var db: DatabaseQueue
+    
+    var cache: LRUCache = LRUCache<String, [String]>(cacheLimit: 200)
 
     init(database: DatabaseQueue) {
         self.db = database
@@ -31,9 +33,17 @@ class LexiconTree {
 
     func searchPhrase(pinyins: [String]) -> [String]? {
         var phrases: [String]?
-        db.read { db in
-            phrases = try? String.fetchAll(db, sql: "select vocab from lexicon where code glob \"\(encodePinyin(pinyins: pinyins))\"")
+        let encodedPinyin = encodePinyin(pinyins: pinyins)
+        
+        /* query cache first */
+        if let phrases = cache[encodedPinyin] {
+            return phrases
         }
+        
+        db.read { db in
+            phrases = try? String.fetchAll(db, sql: "select vocab from lexicon where code glob \"\(encodedPinyin)\"")
+        }
+        cache[encodedPinyin] = phrases // add into cache
         return phrases
     }
 
