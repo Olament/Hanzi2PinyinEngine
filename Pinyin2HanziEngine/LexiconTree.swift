@@ -40,9 +40,16 @@ class LexiconTree {
             return phrases
         }
         
-        db.read { db in
-            phrases = try? String.fetchAll(db, sql: "select vocab from lexicon where code glob \"\(encodedPinyin)\"")
+        if encodedPinyin.contains("?") {
+            db.read { db in
+                phrases = try? String.fetchAll(db, sql: "select vocab from lexicon where code glob \"\(encodedPinyin)\"")
+            }
+        } else {
+            db.read { db in
+                phrases = try? String.fetchAll(db, sql: "select vocab from lexicon where code == \"\(encodedPinyin)\"")
+            }
         }
+        
         cache[encodedPinyin] = phrases // add into cache
         return phrases
     }
@@ -50,17 +57,21 @@ class LexiconTree {
     private func encodePinyin(pinyins: [String]) -> String {
         var codes: String = ""
         for pinyin in pinyins {
-            var index = 0 // keep track of where we are
-            /* isolate shenmu from pinyin string */
-            if let code = self.shenmu[pinyin[0..<2]] {
-                codes += code
-                index = 2
-            } else if let code = self.shenmu[pinyin[0..<1]] {
-                codes += code
-                index = 1
+            if pinyin.contains("?") {
+                codes += self.shenmu[pinyin[0..<pinyin.count-1]]! + "?"
+            } else {
+                var index = 0 // keep track of where we are
+                /* isolate shenmu from pinyin string */
+                if let code = self.shenmu[pinyin[0..<2]] {
+                    codes += code
+                    index = 2
+                } else if let code = self.shenmu[pinyin[0..<1]] {
+                    codes += code
+                    index = 1
+                }
+                // since we get ride of shenmu, rest of them must be yunmu
+                codes += self.yunmu[pinyin[index...]]!
             }
-            // since we get ride of shenmu, rest of them must be yunmu
-            codes += self.yunmu[pinyin[index...]]!
         }
         return codes
     }
