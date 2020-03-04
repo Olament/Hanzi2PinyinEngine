@@ -14,8 +14,8 @@ class PinyinEngine {
     var lexiconTree: LexiconTree
     var languageModel: LanguageModel
     
-    var database: DatabaseQueue! // grams database
-    var lexicon: DatabaseQueue! // phrase database
+    var gramDatabase: DatabaseQueue! // grams database
+    var lexiconDatabase: DatabaseQueue! // phrase database
 
     init() {
         // init syllable
@@ -35,13 +35,13 @@ class PinyinEngine {
         if let path = Bundle.main.path(forResource: "lexicon", ofType: "sqlite3") {
             do {
                 let db = try DatabaseQueue(path: path)
-                self.lexicon = db
+                self.lexiconDatabase = db
             } catch {
                 print("failed to load lexicon database")
             }
         }
         
-        self.lexiconTree = LexiconTree(database: self.lexicon)
+        self.lexiconTree = LexiconTree(database: self.lexiconDatabase)
         
         if let path = Bundle.main.path(forResource: "db", ofType: "sqlite3") {
             do {
@@ -55,13 +55,13 @@ class PinyinEngine {
                 }
                 config.readonly = true
                 let db = try DatabaseQueue(path: path, configuration: config)
-                self.database = db
+                self.gramDatabase = db
             } catch {
                 print("failed to load database")
             }
         }
         
-        self.languageModel = LanguageModel(lexicon: lexiconTree, databaseConnection: database)
+        self.languageModel = LanguageModel(lexicon: lexiconTree, databaseConnection: gramDatabase)
     }
     
     func getSentence(pinyin: String) -> [Solution] {
