@@ -16,10 +16,8 @@ class SyllableGraph: Graph<SyllableGraph.VertexData, String>, CustomStringConver
             if edge.from.data!.shrinkID == -1 || edge.to.data!.shrinkID == -1 {
                 continue
             }
-            
             desc.append("\(edge.from.data!.shrinkID) \(edge.to.data!.shrinkID) \"\(edge.data!)\"\n")
         }
-        
         return desc
     }
     
@@ -32,12 +30,27 @@ class SyllableGraph: Graph<SyllableGraph.VertexData, String>, CustomStringConver
     var pinyinString: String
     var validSyllable: Set<String>
     
+    let initialTables: Set<String> = ["b", "p", "m", "f", "d", "t", "n", "l", "g", "k",
+                                      "h", "j", "q", "x", "zh", "ch", "sh", "r", "z", "c", "s", "y", "w"]
+    
     init(pinyin: String, validSyllable: Set<String>) {
         self.pinyinString = pinyin
         self.validSyllable = validSyllable
         
         super.init(numberOfVertices: self.pinyinString.count+1)
         
+        buildGraph(allowOmitYunmu: false) // try to build graph without omit yunmu first
+        if (!isValidGraph()) { //
+            buildGraph(allowOmitYunmu: true)
+            if (!isValidGraph()) {
+                // do something
+            }
+        }
+                
+        shrinkGraph()
+    }
+        
+    func buildGraph(allowOmitYunmu: Bool) {
         /* init vertices */
         for i in 0..<self.vertices.count { // pinyin.count + 1 vertices in total
             vertices[i].data = VertexData()
@@ -50,22 +63,23 @@ class SyllableGraph: Graph<SyllableGraph.VertexData, String>, CustomStringConver
                 if validSyllable.contains(substring) {
                     let edge = addEdge(from: vertices[i], to: vertices[i+j])
                     edge.data = substring
+                } else if (allowOmitYunmu && initialTables.contains(substring)) {
+                    let edge = addEdge(from: vertices[i], to: vertices[i+j])
+                    edge.data = substring + "?" // for database glob query
                 }
             }
         }
-                
-        shrinkGraph()
+    }
+    
+    private func isValidGraph() -> Bool {
+        searchForward(start: vertices[0])
+        return vertices[vertices.count-1].data!.isForwardAccess
     }
     
     /*
      Shrink the graph such that only valid syllable remains in the graph
      */
     func shrinkGraph() {
-        searchForward(start: vertices[0])
-        if !vertices[vertices.count-1].data!.isForwardAccess {
-            //TODO: error handling
-        }
-        
         searchBackward(start: self.vertices[self.vertexCount - 1])
         
         var validVerticesCount = 0 // number of vertices we will keep after "shrink"

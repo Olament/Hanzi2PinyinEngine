@@ -19,7 +19,6 @@ bin
 bing
 bo
 bu
-by
 ca
 cai
 can
@@ -214,7 +213,6 @@ ne
 nei
 nen
 neng
-ng
 ni
 nian
 niang
@@ -263,7 +261,6 @@ qu
 quan
 que
 qun
-r
 ran
 rang
 rao
