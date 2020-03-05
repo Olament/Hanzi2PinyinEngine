@@ -149,6 +149,36 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		542501D72411BDAB0094B882 /* Graphs */ = {
+			isa = PBXGroup;
+			children = (
+				54B5ADBD23EF611A00E45988 /* Graph.swift */,
+				54B5ADBB23EF611A00E45988 /* SyllableGraph.swift */,
+				54B045BD23F8FA26003EB423 /* LexiconGraph.swift */,
+				5418950F23FA3BB6008A3B47 /* SLMGraph.swift */,
+			);
+			path = Graphs;
+			sourceTree = "<group>";
+		};
+		542501DF2411BE0D0094B882 /* Data structure */ = {
+			isa = PBXGroup;
+			children = (
+				54C3CBE42407640000E03519 /* LRUCache.swift */,
+				5418951123FAF77C008A3B47 /* Solution.swift */,
+				54B5ADBE23EF611A00E45988 /* PinyinSequence.swift */,
+			);
+			path = "Data structure";
+			sourceTree = "<group>";
+		};
+		542501E02411BE4B0094B882 /* Query */ = {
+			isa = PBXGroup;
+			children = (
+				54B045BB23F8E982003EB423 /* LexiconTree.swift */,
+				54F4C323240AEF9E004A586F /* LanguageModel.swift */,
+			);
+			path = Query;
+			sourceTree = "<group>";
+		};
 		5449874724042F360050D391 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -188,15 +218,9 @@
 				54C3CBD02405198B00E03519 /* Script */,
 				54B5ADB023EF5FBC00E45988 /* Supporting files */,
 				54B5ADB723EF607F00E45988 /* Resources */,
-				54B5ADBD23EF611A00E45988 /* Graph.swift */,
-				5418951123FAF77C008A3B47 /* Solution.swift */,
-				54C3CBE42407640000E03519 /* LRUCache.swift */,
-				54B5ADBB23EF611A00E45988 /* SyllableGraph.swift */,
-				54B045BB23F8E982003EB423 /* LexiconTree.swift */,
-				54B045BD23F8FA26003EB423 /* LexiconGraph.swift */,
-				54B5ADBE23EF611A00E45988 /* PinyinSequence.swift */,
-				54F4C323240AEF9E004A586F /* LanguageModel.swift */,
-				5418950F23FA3BB6008A3B47 /* SLMGraph.swift */,
+				542501D72411BDAB0094B882 /* Graphs */,
+				542501DF2411BE0D0094B882 /* Data structure */,
+				542501E02411BE4B0094B882 /* Query */,
 				54F762EA23FCE5550074E4AC /* PinyinEngine.swift */,
 				54B5ADB523EF606300E45988 /* ViewController.swift */,
 				54B5ADAA23EF5FAB00E45988 /* Info.plist */,
