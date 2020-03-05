@@ -9,6 +9,9 @@
 import Foundation
 import GRDB
 
+/*
+ A script that generate the database that this program currently use
+ */
 func generateDatabase() {
     // init unigram
     print("load unigram")
