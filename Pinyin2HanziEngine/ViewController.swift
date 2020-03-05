@@ -21,6 +21,8 @@ class ViewController: UIViewController {
         
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.dismissKeyboard (_:)))
         self.view.addGestureRecognizer(tapGesture)
+        
+        input.autocorrectionType = .no
     }
     
     @IBAction func getSentence(_ sender: UIButton) {
