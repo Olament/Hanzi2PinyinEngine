@@ -28,15 +28,13 @@ class ViewController: UIViewController {
     @IBAction func getSentence(_ sender: UIButton) {
         if let inputString = input.text {
             let start = DispatchTime.now()
-            let solutions = model.getSentence(pinyin: inputString)
+            let solution = model.getSentence(pinyin: inputString)
             let end = DispatchTime.now()
             let elapsedTime = Double(end.uptimeNanoseconds - start.uptimeNanoseconds) / 1_000_000
             print("Time: \(elapsedTime)")
             
-            output.text = ""
-            for solution in solutions {
-                output.text.append("\(solution.sentence) \(solution.probability) \(solution.pinyin.description)\n")
-            }
+            output.text = "\(solution.sentence) \(solution.probability) \(solution.pinyin.description)\n"
+            
             print(output.text!)
         }
     }

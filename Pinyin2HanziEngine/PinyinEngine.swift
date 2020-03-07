@@ -64,7 +64,7 @@ class PinyinEngine {
         self.languageModel = LanguageModel(lexicon: lexiconTree, databaseConnection: gramDatabase)
     }
     
-    func getSentence(pinyin: String) -> [Solution] {
+    func getSentence(pinyin: String) -> Solution {
         var time: [DispatchTime] = []
         // init syllable graph
         time.append(DispatchTime.now())

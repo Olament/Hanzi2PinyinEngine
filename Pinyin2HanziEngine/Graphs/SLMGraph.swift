@@ -13,58 +13,6 @@ class SLMGraph: Graph<SLMGraph.VertexData, Weight>, CustomStringConvertible {
     class VertexData {
         var phrase: String?
         var pinyinSequence: PinyinSequence?
-        var isCalculated = false
-        var distanceSet: DistanceSet
-
-        init(solutionSizeLimit limit: Int) {
-            self.distanceSet = DistanceSet(limit: limit)
-        }
-    }
-
-    class Distance {
-        var distance = -Double.infinity
-        var edge: Graph<VertexData, Weight>.Edge?
-        
-        init(distance: Double, edge: Graph<VertexData, Weight>.Edge) {
-            self.distance = distance
-            self.edge = edge
-        }
-        
-        init(distance: Double) {
-            self.distance = distance
-        }
-    }
-
-    class DistanceSet {
-        var sizeLimit: Int
-        var distanceList: [Distance] = []
-        
-        init(limit: Int) {
-            self.sizeLimit = limit
-        }
-        
-        func add(newDistance distance: Distance) -> Bool {
-            var isAdd = false
-            for i in 0..<distanceList.count {
-                if distance.distance > distanceList[i].distance {
-                    distanceList.insert(distance, at: i)
-                    isAdd = true
-                    if distanceList.count > sizeLimit {
-                        distanceList.remove(at: distanceList.count-1)
-                    }
-                    break
-                }
-            }
-            
-            if !isAdd {
-                if distanceList.count == sizeLimit {
-                    return false
-                }
-                distanceList.append(distance)
-            }
-            
-            return true
-        }
     }
 
     var solutionSizeLimit: Int
@@ -78,7 +26,7 @@ class SLMGraph: Graph<SLMGraph.VertexData, Weight>, CustomStringConvertible {
         time.append(DispatchTime.now())
         
         for vertex in self.vertices {
-            vertex.data = VertexData(solutionSizeLimit: self.solutionSizeLimit)
+            vertex.data = VertexData()
         }
         time.append(DispatchTime.now())
         
@@ -135,92 +83,64 @@ class SLMGraph: Graph<SLMGraph.VertexData, Weight>, CustomStringConvertible {
         return edge
     }
     
-    func calculatedPath(vertex current: SLMGraph.Vertex) {
-        current.data!.isCalculated = true // mark itself as visited
-        
-        for edge in current.from {
-            let prev = edge.from
-            let weight = log(edge.data!.probability!)
-            if !prev.data!.isCalculated {
-                calculatedPath(vertex: prev)
-            }
-            
-            for prevDistance in (prev.data?.distanceSet.distanceList)! {
-                if !current.data!.distanceSet.add(newDistance: Distance(distance: prevDistance.distance + weight, edge: edge)) {
-                    break // do not ask me why
-                }
+    
+    /// find optimal sentence
+    lazy var isVisited = Array(repeating: false, count: self.vertices.count)
+    var stack: Stack<Int> = Stack()
+    
+    private func topologicalSort() {
+        for index in 0..<self.vertices.count {
+            if !isVisited[index] {
+                depthFirstSearch(at: index)
             }
         }
     }
     
-    private var phraseSequence: [SLMGraph.VertexData]  = []
-    private var sentences: [Solution] = []
-    
-    private func makeSentence(currentVertex: SLMGraph.Vertex, probability: Double) {
-        phraseSequence.insert(currentVertex.data!, at: 0)
-        
-        for distance in currentVertex.data!.distanceSet.distanceList {
-            if let prevEdge = distance.edge {
-                // since we log transform each weight
-                // w1*w2*w3 -> log(w1*w2*w3) = log(w1) + log(w2) + log(w3)
-                makeSentence(currentVertex: prevEdge.from, probability: probability + log(prevEdge.data!.probability!))
-            } else {
-                var sentence: String = ""
-                var pinyins: [String] = []
-                
-                for vertexData in phraseSequence {
-                    if let phrase = vertexData.phrase, let pinyinSequence = vertexData.pinyinSequence {
-                        sentence.append(phrase)
-                        for sequence in pinyinSequence.pinyinSequence {
-                            pinyins.append(sequence)
-                        }
-                    }
-                }
-                
-                let newSolution = Solution() //TODO: rewrite this part
-                newSolution.sentence = sentence
-                newSolution.probability = probability
-                newSolution.pinyin = pinyins
-                
-                sentences.append(newSolution)
+    private func depthFirstSearch(at index: Int) {
+        isVisited[index] = true
+        for edge in self.vertices[index].to {
+            if !isVisited[edge.to.id] {
+                depthFirstSearch(at: edge.to.id)
             }
         }
-        
-        phraseSequence.remove(at: 0)
+        stack.push(newElement: index)
     }
     
-    func makeSentence() -> [Solution] {
-        /* set vertex (S) such that search terminate here */
-        self.vertices[0].data?.isCalculated = true
-        _ = self.vertices[0].data?.distanceSet.add(newDistance: Distance(distance: 0.0))
+    lazy var edgeTo: [SLMGraph.Edge?] = Array(repeating: nil, count: self.vertices.count) // store the edge to access this vertex in shortest path
+    lazy var distanceTo: [Double] = Array(repeating: Double.infinity, count: self.vertices.count) // shortest distance to vertex i
+    
+    func makeSentence() -> Solution {
+        self.distanceTo[0] = 0 // set the starting vertex to zero
         
-        calculatedPath(vertex: self.vertices[self.vertexCount - 1])
-        makeSentence(currentVertex: self.vertices[self.vertexCount - 1], probability: 0.0)
-        
-        sentences.sort(by: {$0 > $1})
-        var finalSentences: [Solution] = [] // sentences w/o duplicate
-        
-        /* removing duplicate solution from solution set */
-        for i in 0..<sentences.count {
-            var isDuplicate = false
-            for sentence in finalSentences {
-                if sentence.sentence == sentences[i].sentence {
-                    isDuplicate = true
-                    break
-                }
-            }
-            
-            if !isDuplicate {
-                //print("\(sentences[i].sentence) \(sentences[i].probability) \(sentences[i].pinyin)")
-                finalSentences.append(sentences[i])
-                
-                if finalSentences.count > solutionSizeLimit {
-                    break
-                }
-            }
+        topologicalSort()
+        for index in self.stack {
+            relax(index: index)
         }
         
-        return finalSentences
+        /* find the shortest path from 0 to self.vertices.count - 1 */
+        var currentIndex = self.edgeTo[self.vertexCount - 1]!.from.id // skip the last vertex
+        let solution: Solution = Solution()
+        solution.probability = self.distanceTo[self.vertexCount - 1]
+        
+        while currentIndex != 0 {
+            solution.pinyin = self.vertices[currentIndex].data!.pinyinSequence!.pinyinSequence + solution.pinyin
+            solution.sentence = self.vertices[currentIndex].data!.phrase! + solution.sentence
+            currentIndex = self.edgeTo[currentIndex]!.from.id
+        }
+        
+        return solution
+    }
+    
+    private func relax(index: Int) {
+        for edge in self.vertices[index].to { // relax adjacent vetex
+            let vertexIndex = edge.to.id
+            let newDistance = self.distanceTo[index] - log(edge.data!.probability!) // new distance from source to edge.to.id
+            
+            if newDistance < self.distanceTo[vertexIndex] {
+                self.distanceTo[vertexIndex] = newDistance
+                self.edgeTo[vertexIndex] = edge
+            }
+        }
     }
     
     var description: String {
@@ -228,7 +148,7 @@ class SLMGraph: Graph<SLMGraph.VertexData, Weight>, CustomStringConvertible {
         for edge in self.edges {
             let from = edge.from
             let to = edge.to
-            desc.append("\(from.id)(\"\(from.data!.phrase!)\") \(to.id)(\"\(to.data!.phrase!)\") \(edge.data!)\n")
+            desc.append("\(from.id)(\"\(from.data!.phrase!)\") \(to.id)(\"\(to.data!.phrase!)\") \(edge.data!.probability!)\n")
         }
         return desc
     }
