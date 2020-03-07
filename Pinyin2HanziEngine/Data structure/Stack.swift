@@ -8,8 +8,8 @@
 
 import Foundation
 
-class Stack<E> {
-    private class Node<E> {
+class Stack<E>: Sequence {
+    class Node<E> {
         var item: E
         var next: Node?
         
@@ -42,5 +42,27 @@ class Stack<E> {
     
     func isEmpty() -> Bool {
         return count == 0
+    }
+    
+    func makeIterator() -> StackIterator<E> {
+        return StackIterator<E>(self.head)
+    }
+}
+
+struct StackIterator<E>: IteratorProtocol {
+    typealias Element = E
+    
+    var currentNode: Stack<E>.Node<E>?
+    
+    init(_ node: Stack<E>.Node<E>?) {
+        self.currentNode = node
+    }
+    
+    mutating func next() -> Element? {
+        if let current = currentNode {
+            self.currentNode = current.next
+            return current.item
+        }
+        return nil
     }
 }
