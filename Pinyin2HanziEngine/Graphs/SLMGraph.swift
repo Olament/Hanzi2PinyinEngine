@@ -84,7 +84,7 @@ class SLMGraph: Graph<SLMGraph.VertexData, Weight>, CustomStringConvertible {
     }
     
     
-    /// find optimal sentence
+    // find optimal sentence
     lazy var isVisited = Array(repeating: false, count: self.vertices.count)
     var stack: Stack<Int> = Stack()
     
