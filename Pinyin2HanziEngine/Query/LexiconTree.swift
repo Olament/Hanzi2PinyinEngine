@@ -42,14 +42,16 @@ class LexiconTree {
         
         if encodedPinyin.contains("?") {
             db.read { db in
-                phrases = try? String.fetchAll(db, sql: "select vocab from lexicon where code glob \"\(encodedPinyin)\"")
+                let query = "SELECT vocab FROM lexicon WHERE code GLOB ?"
+                let pattern = encodedPinyin
+                phrases = try? String.fetchAll(db, sql: query, arguments: [pattern])
             }
         } else {
             db.read { db in
-                phrases = try? String.fetchAll(db, sql: "select vocab from lexicon where code == \"\(encodedPinyin)\"")
+                let query = "SELECT vocab FROM lexicon WHERE code = ?"
+                phrases = try? String.fetchAll(db, sql: query, arguments: [encodedPinyin])
             }
         }
-        
         cache[encodedPinyin] = phrases // add into cache
         return phrases
     }
